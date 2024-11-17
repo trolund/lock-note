@@ -27,6 +27,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
 resource database 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   name: 'LockNoteAppDb'
   parent: sqlServer
+  location: resourceGroup().location
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
   }
