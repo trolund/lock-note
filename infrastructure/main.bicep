@@ -35,14 +35,14 @@ resource database 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-  name: 'LockNoteAppKeyVault'
-  location: location
-  properties: {
-    sku: {
-      family: 'A'
-      name: 'standard'
-    }
-    tenantId: subscription().tenantId
-  }
-}
+// resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
+//   name: 'LockNoteAppKeyVault'
+//   location: location
+//   properties: {
+//     sku: {
+//       family: 'A'
+//       name: 'standard'
+//     }
+//     tenantId: subscription().tenantId
+//   }
+// }
