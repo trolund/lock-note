@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: prod # Specify the environment here
 
     steps:
     # Step 1: Checkout code
