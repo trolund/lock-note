@@ -1,32 +1,31 @@
-name: Deploy Bicep to Azure
+ name: Deploy Bicep to Azure
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch: # Allows manual triggering of the workflow
+ on:
+   push:
+     branches:
+       - main
+   workflow_dispatch: # Allows manual triggering of the workflow
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: prod # Specify the environment here
+ jobs:
+   deploy:
+     runs-on: ubuntu-latest
+     environment: prod # Specify the environment here
 
-    steps:
-    # Step 1: Checkout code
-    - name: Checkout Code
-      uses: actions/checkout@v3
+     steps:
+     # Step 1: Checkout code
+     - name: Checkout Code
+       uses: actions/checkout@v3
 
-    # Step 2: Login to Azure
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+     # Step 2: Login to Azure
+     - name: Login to Azure
+       uses: azure/login@v1
+       with:
+         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Step 3: Deploy Bicep
-    - name: Deploy Bicep File
-      run: |
-        az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
-        az deployment group create \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-          --template-file infrastructure/main.bicep \
-          --parameters location=${{ secrets.AZURE_LOCATION }}
+     # Step 3: Deploy Bicep
+     - name: Deploy Bicep File
+       run: |
+         az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
+         az deployment group create \
+           --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+           --template-file infrastructure/main.bicep

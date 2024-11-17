@@ -1,6 +1,8 @@
+param location string = resourceGroup().location
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: 'LockNoteAppServicePlan'
-  location: resourceGroup().location
+  location: location
   sku: {
     name: 'B1'
     tier: 'Basic'
@@ -9,7 +11,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
   name: 'NoteApp'
-  location: resourceGroup().location
+  location: location
   properties: {
     serverFarmId: appServicePlan.id
   }
@@ -17,7 +19,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 
 resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   name: 'LockNoteAppSqlServer'
-  location: resourceGroup().location
+  location: location
   properties: {
     administratorLogin: 'adminuser'
     administratorLoginPassword: 'P@ssw0rd123!'
@@ -27,7 +29,7 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
 resource database 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
   name: 'LockNoteAppDb'
   parent: sqlServer
-  location: resourceGroup().location
+  location: location
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
   }
@@ -35,7 +37,7 @@ resource database 'Microsoft.Sql/servers/databases@2022-05-01-preview' = {
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'LockNoteAppKeyVault'
-  location: resourceGroup().location
+  location: location
   properties: {
     sku: {
       family: 'A'
