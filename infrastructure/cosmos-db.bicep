@@ -4,12 +4,17 @@ param databaseName string
 param containerName string
 
 // Create Cosmos DB Account
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2022-03-01' = {
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
   name: cosmosDbAccountName
   location: location
+  kind: 'GlobalDocumentDB'
   properties: {
     databaseAccountOfferType: 'Standard'
-    kind: 'GlobalDocumentDB' // SQL API is the default choice for document-based DBs
+    locations: [
+      {
+        locationName: location
+      }
+    ]
   }
 }
 
