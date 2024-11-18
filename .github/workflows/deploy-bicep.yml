@@ -51,6 +51,9 @@ jobs:
           app_location: "./client/lock-note-web-app" # Location of React app
           output_location: "./client/lock-note-web-app/build" # Build output folder
           deployment_action: "upload"
+          skip_app_build: true
+          verbose: true
+          #deployment_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} # Required only if you are using a private repository
 
       # Step 5: Deploy .NET API to App Service
       - name: Setup .NET
