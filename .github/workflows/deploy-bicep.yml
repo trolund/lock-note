@@ -30,7 +30,27 @@ jobs:
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --template-file infrastructure/main.bicep
 
-      # Step 4: Build and Deploy React Frontend
+        # Step 4: Retrieve Output from Bicep Deployment (Cosmos DB connection string)
+      - name: Retrieve Cosmos DB Connection String
+        run: |
+          output=$(az deployment group show \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --name $(az deployment group list --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --query "[].name" -o tsv | head -n 1) \
+            --query "properties.outputs.cosmosDbConnectionString.value" -o tsv)
+
+          echo "Cosmos DB Connection String: $output"
+
+          # Optionally, you can store the connection string in a secret or as an environment variable
+          echo "COSMOS_DB_CONNECTION_STRING=$output" >> $GITHUB_ENV
+
+          # Step 5: Use the Cosmos DB connection string in your next steps (e.g., deploying your app)
+
+      - name: Use Cosmos DB Connection String
+        run: |
+          echo "Using the Cosmos DB connection string stored in the environment variable."
+          echo ${{ env.COSMOS_DB_CONNECTION_STRING }}
+
+        # Step 4: Build and Deploy React Frontend
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:

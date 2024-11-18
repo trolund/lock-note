@@ -1,4 +1,8 @@
 param location string = resourceGroup().location
+param resourceGroupName string = 'LockNoteGroup'
+param cosmosDbAccountName string = 'locknotecosmosdb'
+param databaseName string = 'LockNote'
+param containerName string = 'Notes'
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: 'LockNoteAppServicePlan'
@@ -16,6 +20,21 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
     serverFarmId: appServicePlan.id
   }
 }
+
+// Reference the Cosmos DB module
+module cosmosDbModule './cosmos-db.bicep' = {
+  name: 'LockNoteCosmosDb'
+  params: {
+    resourceGroupName: resourceGroupName
+    cosmosDbAccountName: cosmosDbAccountName
+    location: location
+    databaseName: databaseName
+    containerName: containerName
+  }
+}
+
+// You can access the Cosmos DB connection string from the module's output
+output cosmosDbConnectionString string = cosmosDbModule.outputs.cosmosDbConnectionString
 
 // resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
 //   name: 'LockNoteAppSqlServer'
