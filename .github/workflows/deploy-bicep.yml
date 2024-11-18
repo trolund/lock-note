@@ -40,10 +40,6 @@ jobs:
         working-directory: ./src/LockNote.Client
         run: npm install # todo ci
 
-      # - name: Build React App
-      #   working-directory: ./src/LockNote.Client
-      #   run: npm run build
-
       # Step 5: Publish Backend and Frontend Together
       - name: Setup .NET
         uses: actions/setup-dotnet@v3

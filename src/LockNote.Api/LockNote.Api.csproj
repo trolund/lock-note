@@ -15,16 +15,12 @@
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.11" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
     </ItemGroup>
-    
-    <Target Name="CreateWwwrootFolderBuild" AfterTargets="AfterBuild">
-        <MakeDir Directories="$(BuildDir)wwwroot" Condition="!Exists('$(BuildDir)wwwroot')" />
-    </Target>
 
     <Target Name="CreateAppDataFolder" BeforeTargets="Publish">
         <Exec Command="npm run build" WorkingDirectory="../LockNote.Client" />
         <ItemGroup>
             <CopyDist Include="../LockNote.Client/dist/**/*.*" />
         </ItemGroup>
-        <Copy SourceFiles="@(CopyDist)" DestinationFiles="@(CopyDist->'$(PublishDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" />
+        <Copy SourceFiles="@(CopyDist)" DestinationFiles="@(CopyDist->'$(PublishDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
     </Target>
 </Project>
