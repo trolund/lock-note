@@ -18,31 +18,27 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
   }
 }
 
-// // Create Cosmos DB Database
-// resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-03-01' = {
-//   parent: cosmosDbAccount
-//   name: databaseName
-//   properties: {
-//     resource: {
-//       id: databaseName
-//     }
-//   }
-// }
+// Create Cosmos DB Database
+resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-09-15' = {
+  parent: cosmosDbAccount
+  name: databaseName
+  properties: {
+    resource: {
+      id: databaseName
+    }
+  }
+}
 
-// // Create Cosmos DB Container (Collection)
-// resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-03-01' = {
-//   parent: cosmosDbDatabase
-//   name: containerName
-//   properties: {
-//     resource: {
-//       id: containerName
-//       partitionKey: {
-//         paths: ['/id']
-//         kind: 'Hash'
-//       }
-//     }
-//   }
-// }
+// Create Cosmos DB Container (Collection)
+resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-09-15' = {
+  parent: cosmosDbDatabase
+  name: containerName
+  properties: {
+    resource: {
+      id: containerName
+    }
+  }
+}
 
 // Output the Cosmos DB connection string
-output cosmosDbConnectionString string = cosmosDbAccount.properties.connectionStrings[0]
+output cosmosDbConnectionString string = cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
