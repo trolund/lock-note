@@ -3,8 +3,8 @@ param location string
 param databaseName string
 param containerName string
 
-// Create Cosmos DB Account
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
+// Create a Cosmos DB account
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
   name: cosmosDbAccountName
   location: location
   kind: 'GlobalDocumentDB'
@@ -15,29 +15,17 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-09-15' = {
         locationName: location
       }
     ]
+    consistencyPolicy: {
+      defaultConsistencyLevel: 'Session'
+    }
   }
 }
 
-// Create Cosmos DB Database
-resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2023-09-15' = {
-  parent: cosmosDbAccount
+// Create a database
+resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-08-15' = {
   name: databaseName
-  properties: {
-    resource: {
-      id: databaseName
-    }
-  }
-}
-
-// Create Cosmos DB Container (Collection)
-resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2023-09-15' = {
-  parent: cosmosDbDatabase
-  name: containerName
-  properties: {
-    resource: {
-      id: containerName
-    }
-  }
+  parent: cosmosDbAccount
+  location: location
 }
 
 // Output the Cosmos DB connection string
