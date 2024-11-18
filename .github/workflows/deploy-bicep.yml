@@ -51,13 +51,8 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Publish API and Frontend
-        working-directory: ./LockNote.Api
         run: |
-          # Copy React build to the API's wwwroot folder
-          rm -rf ./wwwroot
-          cp -r ../LockNote.Client/build ./wwwroot
-          # Publish the API (including React files)
-          dotnet publish -c Release -o ./publish
+          dotnet publish
 
       - name: Deploy to Azure Web App
         uses: Azure/webapps-deploy@v2
