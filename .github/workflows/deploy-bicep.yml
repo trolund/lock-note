@@ -37,11 +37,11 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        working-directory: ./client/lock-note-web-app
+        working-directory: ./src/LockNote.Client
         run: npm install # todo ci
 
       - name: Build React App
-        working-directory: ./client/lock-note-web-app
+        working-directory: ./src/LockNote.Client
         run: npm run build
 
       # Deploy to Azure Web App
@@ -51,7 +51,7 @@ jobs:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }} # Azure Web App name
           slot-name: "production" # Deployment slot
           publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
-          package: "./client/lock-note-web-app/build"
+          package: "./src/LockNote.Client/build"
 
       # Step 5: Deploy .NET API to App Service
       - name: Setup .NET
