@@ -7,6 +7,10 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "LockNote.Client", "LockNote
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockNote.Api", "LockNote.Api\LockNote.Api.csproj", "{4F7150BE-B2C8-42F4-B1C8-B2140FB7E195}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockNote.Data", "LockNote.Data\LockNote.Data.csproj", "{C5142D63-725D-4C63-9F39-111D9CBF145D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockNote.Bl", "LockNote.Bl\LockNote.Bl.csproj", "{D8E6E677-5B4C-4AD9-A4D1-123261702FC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{4F7150BE-B2C8-42F4-B1C8-B2140FB7E195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F7150BE-B2C8-42F4-B1C8-B2140FB7E195}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F7150BE-B2C8-42F4-B1C8-B2140FB7E195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5142D63-725D-4C63-9F39-111D9CBF145D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5142D63-725D-4C63-9F39-111D9CBF145D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5142D63-725D-4C63-9F39-111D9CBF145D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5142D63-725D-4C63-9F39-111D9CBF145D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E6E677-5B4C-4AD9-A4D1-123261702FC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E6E677-5B4C-4AD9-A4D1-123261702FC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E6E677-5B4C-4AD9-A4D1-123261702FC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E6E677-5B4C-4AD9-A4D1-123261702FC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

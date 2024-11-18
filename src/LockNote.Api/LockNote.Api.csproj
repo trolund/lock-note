@@ -24,6 +24,10 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
+    </ItemGroup>
+
     <Target Name="CreateAppDataFolder" BeforeTargets="Publish">
         <Exec Command="npm run build" WorkingDirectory="../LockNote.Client" />
         <ItemGroup>
