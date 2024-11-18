@@ -14,8 +14,8 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: 'LockNoteAppServicePlan'
   location: location
   sku: {
-    name: 'B1'
-    tier: 'Basic'
+    name: 'F1'
+    tier: 'Free'
   }
 }
 
