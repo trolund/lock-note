@@ -44,6 +44,8 @@ jobs:
           publish_profile=$(cat publishProfile.json | jq -r '.[0].publishingProfile')
           echo "PUBLISH_PROFILE=$publish_profile" >> $GITHUB_ENV
 
+          echo ${{ env.PUBLISH_PROFILE }}
+
         # Step 4: Build and Deploy React Frontend
       - name: Setup Node.js
         uses: actions/setup-node@v3
