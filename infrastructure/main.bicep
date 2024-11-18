@@ -25,7 +25,6 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 module cosmosDbModule './cosmos-db.bicep' = {
   name: 'LockNoteCosmosDb'
   params: {
-    resourceGroupName: resourceGroupName
     cosmosDbAccountName: cosmosDbAccountName
     location: location
     databaseName: databaseName
