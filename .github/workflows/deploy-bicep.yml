@@ -44,29 +44,25 @@ jobs:
         working-directory: ./src/LockNote.Client
         run: npm run build
 
-      # Deploy to Azure Web App
-      - name: "Deploy to Azure Web App"
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }} # Azure Web App name
-          slot-name: "production" # Deployment slot
-          publish-profile: ${{ secrets.AZURE_CREDENTIALS }}
-          package: "./src/LockNote.Client/build"
-
-      # Step 5: Deploy .NET API to App Service
+      # Step 5: Publish Backend and Frontend Together
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "8.0.x"
 
-      - name: Publish API
+      - name: Publish API and Frontend
         working-directory: ./LockNote.Api
-        run: dotnet publish -c Release -o ./publish
+        run: |
+          # Copy React build to the API's wwwroot folder
+          rm -rf ./wwwroot
+          cp -r ../LockNote.Client/build ./wwwroot
+          # Publish the API (including React files)
+          dotnet publish -c Release -o ./publish
 
-      - name: Deploy API to Azure App Service
+      - name: Deploy to Azure Web App
         uses: Azure/webapps-deploy@v2
         with:
-          app-name: "LockNote" # Azure App Service name
+          app-name: "NoteApp" # Your Azure Web App name
           slot-name: "production"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./LockNote.Api/publish
