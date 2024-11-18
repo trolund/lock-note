@@ -40,9 +40,9 @@ jobs:
         working-directory: ./src/LockNote.Client
         run: npm install # todo ci
 
-      - name: Build React App
-        working-directory: ./src/LockNote.Client
-        run: npm run build
+      # - name: Build React App
+      #   working-directory: ./src/LockNote.Client
+      #   run: npm run build
 
       # Step 5: Publish Backend and Frontend Together
       - name: Setup .NET
@@ -57,7 +57,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: Azure/webapps-deploy@v2
         with:
-          app-name: "NoteApp" # Your Azure Web App name
+          app-name: "LockNoteApp" # Your Azure Web App name
           slot-name: "production"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./LockNote.Api/publish
