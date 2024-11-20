@@ -1,4 +1,4 @@
-namespace LockNote.Api;
+namespace LockNote;
 
 public class WeatherForecast
 {

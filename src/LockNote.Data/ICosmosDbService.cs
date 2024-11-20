@@ -4,5 +4,5 @@ namespace LockNote.Data;
 
 public interface ICosmosDbService
 {
-    Task<Container> GetContainerAsync(string containerName);
+    Task<Container> GetContainerAsync();
 }

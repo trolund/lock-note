@@ -1,10 +1,13 @@
 namespace LockNote.Data.Model;
 
-public class Note
+public class Note : BaseItem
 {
-    public string Id { get; set; } // Unique ID for Cosmos DB
-    public string PartitionKey { get; set; } // Partition Key
-    public string Content { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public bool IsDeleted { get; set; }
+    public Note()
+    {
+        PartitionKey = "Note";
+    }
+    
+    public required string Content { get; init; }
+    public required DateTime CreatedAt { get; init; }
+    public required bool IsDeleted { get; init; }
 }

@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LockNote.Bl\LockNote.Bl.csproj" />
       <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
     </ItemGroup>
 

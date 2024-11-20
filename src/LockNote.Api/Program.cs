@@ -1,7 +1,7 @@
 using LockNote.Data;
 using Microsoft.Extensions.Options;
 
-namespace LockNote.Api;
+namespace LockNote;
 
 public class Program
 {
@@ -15,6 +15,7 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddCustomServices();
         
         builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDb"));
         builder.Services.AddSingleton<ICosmosDbService>(provider =>
@@ -22,7 +23,6 @@ public class Program
             var settings = provider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
             return new CosmosDbService(settings);
         });
-        builder.Services.AddScoped(typeof(IRepository<>), typeof(CosmosRepository<>));
 
         var app = builder.Build();
 

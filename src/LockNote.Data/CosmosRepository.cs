@@ -1,15 +1,13 @@
+using System.Runtime.CompilerServices;
+
 namespace LockNote.Data;
 
 using Microsoft.Azure.Cosmos;
 
-public class CosmosRepository<T> : IRepository<T> where T : class
+public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T>
+    where T : class
 {
-    private readonly Container _container;
-
-    public CosmosRepository(ICosmosDbService cosmosDbService, string containerName)
-    {
-        _container = cosmosDbService.GetContainerAsync(containerName).GetAwaiter().GetResult();
-    }
+    private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
 
     public async Task<T> GetByIdAsync(string id, string partitionKey)
     {
