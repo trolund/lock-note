@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.11" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
     </ItemGroup>
 
@@ -27,6 +28,7 @@
     <ItemGroup>
       <ProjectReference Include="..\LockNote.Bl\LockNote.Bl.csproj" />
       <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
+      <ProjectReference Include="..\LockNote.Infrastructure\LockNote.Infrastructure.csproj" />
     </ItemGroup>
 
     <Target Name="CreateAppDataFolder" BeforeTargets="Publish">

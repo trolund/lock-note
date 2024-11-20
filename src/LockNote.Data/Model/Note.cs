@@ -7,7 +7,11 @@ public class Note : BaseItem
         PartitionKey = "Note";
     }
     
+    public int ReadBeforeDelete { get; init; } = 1;
+    
     public required string Content { get; init; }
+    
     public required DateTime CreatedAt { get; init; }
-    public required bool IsDeleted { get; init; }
+    
+    public string? PasswordHash { get; set; }
 }
