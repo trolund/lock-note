@@ -34,16 +34,13 @@ jobs:
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --template-file infrastructure/main.bicep
 
-          # Extract the connection string and encode it for safe handling
-          connection_string=$(az deployment group show \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --name main \
-            --query properties.outputs.connectionString.value \
-            --output tsv)
+          # Extract the connection string from the deployment outputs
+          connectionString=$(jq -r '.properties.outputs.connectionString.value' deployment.json)
 
-          echo "CONNECTION_STRING=$connection_string" >> $GITHUB_ENV
-          echo Connection string:
-          echo ${{ env.CONNECTION_STRING }}
+          # Output the connection string for GitHub Actions
+          echo "connectionString=${connectionString}" >> $GITHUB_ENV
+          echo ConnectionString:
+          echo ${{ env.connectionString }}
 
       # Step 3: Retrieve Publish Profile
       # TODO wabapp name should be a secret
