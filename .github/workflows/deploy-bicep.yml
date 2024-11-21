@@ -23,9 +23,6 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Step 3: Deploy Bicep
-      # the main.bicep output is a connection string
-      # i want to set is as a secret
-
       - name: Deploy Bicep File
         run: |
           az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
@@ -81,6 +78,14 @@ jobs:
       - name: Publish API and Frontend
         working-directory: ./src
         run: dotnet publish -c Release -o ./publish
+
+      - name: Set App Service Connection String
+        run: |
+          az webapp config connection-string set \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --name "LockNoteApp" \
+            --settings CosmosDb=${{ env.connectionString }} \
+            --connection-string-type Custom
 
       - name: Deploy to Azure Web App
         uses: Azure/webapps-deploy@v2
