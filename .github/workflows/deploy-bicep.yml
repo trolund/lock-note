@@ -42,7 +42,7 @@ jobs:
             --output tsv)
 
           echo "CONNECTION_STRING=$connection_string" >> $GITHUB_ENV
-
+          echo Connection string:
           echo ${{ env.CONNECTION_STRING }}
 
       # Step 3: Retrieve Publish Profile
