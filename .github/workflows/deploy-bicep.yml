@@ -41,11 +41,10 @@ jobs:
           # Export the connection string as a GitHub Actions environment variable
           echo "connectionString=${connectionString}" >> $GITHUB_ENV
 
-          echo ConnectionString 1:
-          echo deploymentOutputs
-
-          echo ConnectionString:
-          echo ${{ env.connectionString }}
+      - name: Use the Connection String
+        run: |
+          echo "Using the connection string..."
+          echo "Connection String: ${{ env.connectionString }}"
 
       # Step 3: Retrieve Publish Profile
       # TODO wabapp name should be a secret
