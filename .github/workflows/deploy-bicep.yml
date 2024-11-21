@@ -79,14 +79,6 @@ jobs:
         working-directory: ./src
         run: dotnet publish -c Release -o ./publish
 
-      - name: Set App Service Connection String
-        run: |
-          az webapp config connection-string set \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --name "LockNoteApp" \
-            --settings CosmosDb=${{ env.connectionString }} \
-            --connection-string-type Custom
-
       - name: Deploy to Azure Web App
         uses: Azure/webapps-deploy@v2
         with:
