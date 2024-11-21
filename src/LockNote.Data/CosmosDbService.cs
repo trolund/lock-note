@@ -4,7 +4,7 @@ namespace LockNote.Data;
 
 public class CosmosDbService(string? connectionString, CosmosDbSettings settings) : ICosmosDbService
 {
-    private readonly CosmosClient _cosmosClient = connectionString is null ? new CosmosClient(connectionString,
+    private readonly CosmosClient _cosmosClient = connectionString != null ? new CosmosClient(connectionString,
         new CosmosClientOptions
         {
             ApplicationName = "LockNote",
