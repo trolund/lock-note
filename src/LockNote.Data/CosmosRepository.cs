@@ -9,11 +9,12 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
 {
     private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
 
-    public async Task<T> GetByIdAsync(string id, string partitionKey)
+    public async Task<T> GetByIdAsync(string id)
     {
         try
         {
-            var response = await _container.ReadItemAsync<T>(id, new PartitionKey(partitionKey));
+            // TODO - Add partition from entity
+            var response = await _container.ReadItemAsync<T>(id, new PartitionKey("Note"));
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)

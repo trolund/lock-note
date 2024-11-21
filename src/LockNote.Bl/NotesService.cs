@@ -10,9 +10,9 @@ public class NotesService(IRepository<Note> notesRepository)
         await notesRepository.AddAsync(note);
     }
 
-    public async Task<Note> GetNoteAsync(string id, string partitionKey)
+    public async Task<Note> GetNoteAsync(string id)
     {
-        return await notesRepository.GetByIdAsync(id, partitionKey);
+        return await notesRepository.GetByIdAsync(id);
     }
 
     public async Task<IEnumerable<Note>> GetAllNotesAsync()

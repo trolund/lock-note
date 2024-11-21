@@ -20,5 +20,12 @@ namespace LockNote.Controllers
             });
             return Ok();
         }
+        
+        [HttpGet]
+        public async Task<ActionResult> GetNotes()
+        {
+            var notes = await notesService.GetAllNotesAsync();
+            return Ok(notes);
+        }
     }
 }
