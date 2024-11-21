@@ -27,5 +27,12 @@ namespace LockNote.Controllers
             var notes = await notesService.GetAllNotesAsync();
             return Ok(notes);
         }
+        
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetNote(string id)
+        {
+            var note = await notesService.GetNoteAsync(id);
+            return Ok(note);
+        }
     }
 }

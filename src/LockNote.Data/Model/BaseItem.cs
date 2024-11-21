@@ -2,11 +2,11 @@ using Newtonsoft.Json;
 
 namespace LockNote.Data.Model;
 
-public class BaseItem
+public abstract class BaseItem(string partitionKey)
 {
     [JsonProperty("id")] 
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [JsonProperty("partitionKey")] 
-    protected string PartitionKey { get; init; }
+    public string PartitionKey { get; set; } = partitionKey;
 }

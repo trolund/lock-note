@@ -1,20 +1,20 @@
-using System.Runtime.CompilerServices;
+using LockNote.Data.Model;
 
 namespace LockNote.Data;
 
 using Microsoft.Azure.Cosmos;
 
-public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T>
-    where T : class
+// where T : class - T must be a reference type
+public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T> 
+    where T : BaseItem
 {
     private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
 
-    public async Task<T> GetByIdAsync(string id)
+    public async Task<T> GetByIdAsync(string id, string partitionKey)
     {
         try
         {
-            // TODO - Add partition from entity
-            var response = await _container.ReadItemAsync<T>(id, new PartitionKey("Note"));
+            var response = await _container.ReadItemAsync<T>(id, new PartitionKey(partitionKey));
             return response.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -47,8 +47,9 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         await _container.UpsertItemAsync(entity, new PartitionKey(id));
     }
 
-    public async Task DeleteAsync(string id, string partitionKey)
+    public async Task DeleteAsync(string id)
     {
+        var partitionKey = typeof(T).GetProperty("PartitionKey")?.GetValue(null)?.ToString();
         await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
     }
 }

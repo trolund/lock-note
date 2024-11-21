@@ -12,7 +12,7 @@ public class NotesService(IRepository<Note> notesRepository)
 
     public async Task<Note> GetNoteAsync(string id)
     {
-        return await notesRepository.GetByIdAsync(id);
+        return await notesRepository.GetByIdAsync(id, "Note");
     }
 
     public async Task<IEnumerable<Note>> GetAllNotesAsync()

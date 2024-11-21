@@ -1,12 +1,7 @@
 namespace LockNote.Data.Model;
 
-public class Note : BaseItem
+public class Note() : BaseItem("Note")
 {
-    public Note()
-    {
-        PartitionKey = "Note";
-    }
-    
     public int ReadBeforeDelete { get; init; } = 1;
     
     public required string Content { get; init; }
