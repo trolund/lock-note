@@ -30,15 +30,17 @@ jobs:
         run: |
           az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
 
-          az deployment group create \
+          deploymentOutputs=$(az deployment group create \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --template-file infrastructure/main.bicep
+            --template-file infrastructure/main.bicep \
+            --query "properties.outputs" -o json)
 
-          # Extract the connection string from the deployment outputs
-          connectionString=$(jq -r '.properties.outputs.connectionString.value' deployment.json)
+          # Extract the connection string from the outputs
+          connectionString=$(echo $deploymentOutputs | jq -r '.connectionString.value')
 
-          # Output the connection string for GitHub Actions
+          # Export the connection string as a GitHub Actions environment variable
           echo "connectionString=${connectionString}" >> $GITHUB_ENV
+
           echo ConnectionString:
           echo ${{ env.connectionString }}
 
