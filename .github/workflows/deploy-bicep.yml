@@ -23,12 +23,27 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Step 3: Deploy Bicep
+      # the main.bicep output is a connection string
+      # i want to set is as a secret
+
       - name: Deploy Bicep File
         run: |
           az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
+
           az deployment group create \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --template-file infrastructure/main.bicep
+
+          # Extract the connection string and encode it for safe handling
+          connection_string=$(az deployment group show \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --name main \
+            --query properties.outputs.connectionString.value \
+            --output tsv)
+
+          echo "CONNECTION_STRING=$connection_string" >> $GITHUB_ENV
+
+          echo ${{ env.CONNECTION_STRING }}
 
       # Step 3: Retrieve Publish Profile
       # TODO wabapp name should be a secret

@@ -18,10 +18,12 @@ public class Program
         builder.Services.AddCustomServices();
         
         builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDb"));
+        var connectionString = builder.Configuration.GetConnectionString("CosmosDb");
+        
         builder.Services.AddSingleton<ICosmosDbService>(provider =>
         {
             var settings = provider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
-            return new CosmosDbService(settings);
+            return new CosmosDbService(connectionString, settings);
         });
 
         var app = builder.Build();

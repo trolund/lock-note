@@ -2,15 +2,15 @@ using Microsoft.Azure.Cosmos;
 
 namespace LockNote.Data;
 
-public class CosmosDbService(CosmosDbSettings settings) : ICosmosDbService
+public class CosmosDbService(string? connectionString, CosmosDbSettings settings) : ICosmosDbService
 {
-    private readonly CosmosClient _cosmosClient = new(settings.Endpoint, settings.Key,
-        new()
+    private readonly CosmosClient _cosmosClient = connectionString is null ? new CosmosClient(connectionString,
+        new CosmosClientOptions
         {
             ApplicationName = "LockNote",
             ConnectionMode = ConnectionMode.Gateway,
             LimitToEndpoint = true
-        });
+        }) : throw new ArgumentException("Connection string is required");
 
     private readonly string _databaseName = settings.DatabaseName;
     private readonly string _containerName = settings.ContainerName;
