@@ -41,6 +41,9 @@ jobs:
           # Export the connection string as a GitHub Actions environment variable
           echo "connectionString=${connectionString}" >> $GITHUB_ENV
 
+          echo ConnectionString 1:
+          echo deploymentOutputs
+
           echo ConnectionString:
           echo ${{ env.connectionString }}
 
