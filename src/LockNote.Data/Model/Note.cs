@@ -9,4 +9,5 @@ public class Note() : BaseItem("Note")
     public required DateTime CreatedAt { get; init; }
     
     public string? PasswordHash { get; set; }
+    public byte[]? Salt { get; set; }
 }

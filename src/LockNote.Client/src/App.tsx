@@ -1,12 +1,9 @@
-import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto min-h-8">
         <label
           htmlFor="message"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
@@ -20,7 +17,6 @@ function App() {
         ></textarea>
 
         <p className="mt-5">your note is automatically deleted after a month</p>
-        <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
       </div>
     </>
   );

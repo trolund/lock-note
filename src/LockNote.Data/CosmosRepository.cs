@@ -4,7 +4,6 @@ namespace LockNote.Data;
 
 using Microsoft.Azure.Cosmos;
 
-// where T : class - T must be a reference type
 public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T> 
     where T : BaseItem
 {

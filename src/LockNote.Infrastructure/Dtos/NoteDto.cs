@@ -8,5 +8,5 @@ public class NoteDto
     
     public required DateTime CreatedAt { get; init; }
     
-    public string? PasswordHash { get; set; }
+    public string? Password { get; set; }
 }

@@ -13,11 +13,7 @@ namespace LockNote.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateNote(NoteDto noteDto)
         {
-            await notesService.CreateNoteAsync(new Note()
-            {
-                Id = Guid.NewGuid().ToString(), Content = noteDto.Content, CreatedAt = DateTime.Now,
-                PasswordHash = noteDto.PasswordHash, ReadBeforeDelete = noteDto.ReadBeforeDelete
-            });
+            await notesService.CreateNoteAsync(noteDto);
             return Ok();
         }
         
@@ -29,9 +25,15 @@ namespace LockNote.Controllers
         }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetNote(string id)
+        public async Task<ActionResult> GetNote(string id, [FromQuery] string password = "")
         {
-            var note = await notesService.GetNoteAsync(id);
+            var note = await notesService.GetNoteAsync(id, password);
+            
+            if(note == null)
+            {
+                return NotFound();
+            }
+            
             return Ok(note);
         }
     }
