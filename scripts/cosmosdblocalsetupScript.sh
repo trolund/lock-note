@@ -1,12 +1,72 @@
 #!/bin/bash
-docker stop cosmosdb || true && docker rm cosmosdb || true
-ipaddr="$(ifconfig | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1)"
-echo "System IP address is $ipaddr"
-docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
-docker run --rm -p 8081:8081 -p 10251:10251 -p 10252:10252 -p 10253:10253 -p 10254:10254 \
-  --platform linux/amd64 \
-  -m 3g --cpus=2.0 --name=cosmosdb \
-  -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=2 \
-  -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \
-  -e AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE="$ipaddr" \
-  -d mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+# check if docker is installed
+if ! [ -x "$(command -v docker)" ]; then
+  echo 'Error: docker is not installed.' >&2
+  exit 1
+fi
+
+# check if docker is running
+if ! docker info >/dev/null 2>&1; then
+  echo 'Error: docker is not running.' >&2
+
+  # start docker
+  echo 'Starting docker...'
+  open --background -a Docker
+  while ! docker info >/dev/null 2>&1; do
+    sleep 1
+  done
+fi
+
+echo 'Docker is running.'
+
+# check if cosmosdb-emulator container is already running
+if docker ps --format '{{.Names}}' | grep -Eq '^cosmosdb-emulator$'; then
+  echo 'Info: cosmosdb-emulator container is already running.' >&2
+  exit 0
+fi
+
+# check if cosmosdb-emulator container is already exists
+if docker ps -a --format '{{.Names}}' | grep -Eq '^cosmosdb-emulator$'; then
+  echo 'Info: cosmosdb-emulator container is already exists.' >&2
+fi
+
+# check if cosmosdb-emulator image is already exists
+if docker images --format '{{.Repository}}' | grep -Eq '^mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator$'; then
+  echo 'Info: cosmosdb-emulator image is already exists.' >&2
+else
+  # pull cosmosdb-emulator image
+  docker pull mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+fi
+
+# if cosmosdb-emulator container is already exists, start it
+if docker ps -a --format '{{.Names}}' | grep -Eq '^cosmosdb-emulator$'; then
+  echo 'Starting cosmosdb-emulator container...'
+  docker start cosmosdb-emulator
+else
+  echo 'Info: cosmosdb-emulator container does not exist'
+  echo 'Starting cosmosdb-emulator container...'
+  docker run --name cosmosdb-emulator --detach --publish 8081:8081 --publish 1234:1234 mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+fi
+
+# run cosmosdb-emulator container
+
+# check if cosmosdb-emulator container is running
+if docker ps --format '{{.Names}}' | grep -Eq '^cosmosdb-emulator$'; then
+  echo 'CosmosDB Emulator is running.'
+
+  # check if cosmosdb-emulator container is ready
+  while ! curl --silent --fail --output /dev/null http://localhost:1234/; do
+    echo 'Waiting for CosmosDB Emulator to be ready...'
+    sleep 5
+  done
+
+  echo 'CosmosDB Emulator is ready.'
+
+  # open Data Explorer
+  open http://localhost:1234/
+
+  exit 0
+else
+  echo 'Error: Failed to run cosmosdb-emulator container.' >&2
+  exit 1
+fi
