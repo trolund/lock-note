@@ -1,7 +1,7 @@
 name: Deploy Bicep to Azure
 
 on:
-  push:
+  pull_request: # Trigger the workflow on pull requests
     branches:
       - main
   workflow_dispatch: # Allows manual triggering of the workflow
