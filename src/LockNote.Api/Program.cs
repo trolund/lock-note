@@ -33,6 +33,13 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        
+        app.UseCors(policyBuilder =>
+        {
+            policyBuilder.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
 
         app.UseDefaultFiles();
         app.UseStaticFiles();
