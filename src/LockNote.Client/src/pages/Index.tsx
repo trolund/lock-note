@@ -2,13 +2,26 @@ import { useState } from "react";
 import { useCreateNote } from "../api/client";
 import { useQueryClient } from "react-query";
 import { NoteDto } from "../types/NoteDto";
+import { Link } from "react-router-dom";
 
 export const Index = () => {
   const queryClient = useQueryClient();
   const { mutate, data } = useCreateNote(queryClient);
-
-  // state to store the message
   const [message, setMessage] = useState<string>("");
+
+  const baseUrl = import.meta.env.VITE_FRONTEND_BASE_URL;
+
+  if (data) {
+    return (
+      <div className="max-w-2xl mx-auto min-h-8">
+        <p>Your note has been created! You can access it at</p>
+        <Link
+          to={`${baseUrl}/note/${data.id}`}
+        >{`${baseUrl}/note/${data.id}`}</Link>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl mx-auto min-h-8">
       <label
@@ -31,8 +44,7 @@ export const Index = () => {
       >
         Create note
       </button>
-      <p>ID:{data?.id}</p>
-      <p className="mt-5">your note is automatically deleted after a month</p>
+      <p className="mt-5">Your note is automatically deleted after a month</p>
     </div>
   );
 };
