@@ -10,9 +10,9 @@ public class NotesService(IRepository<Note> notesRepository)
     {
         var noteModel = new Note
         {
-            ReadBeforeDelete = note.ReadBeforeDelete,
+            ReadBeforeDelete = 1,
             Content = note.Content,
-            CreatedAt = note.CreatedAt
+            CreatedAt = DateTime.UtcNow
         };
         
         if(note.Password == null)
