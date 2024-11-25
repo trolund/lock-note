@@ -36,9 +36,9 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         return results;
     }
 
-    public async Task AddAsync(T entity)
+    public async Task<T> AddAsync(T entity)
     {
-        await _container.CreateItemAsync(entity);
+        return (await _container.CreateItemAsync(entity)).Resource;
     }
 
     public async Task UpdateAsync(string id, T entity)

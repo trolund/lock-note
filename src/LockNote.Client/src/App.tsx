@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Index } from "./pages/Index";
+import { ReadNote } from "./pages/read-note";
+import { PageNotFound } from "./pages/page-not-found";
 
 function App() {
   const queryClient = new QueryClient();
@@ -9,7 +11,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />}></Route>
+          <Route index element={<Index />}></Route>
+          <Route path="note/:noteId" element={<ReadNote />}></Route>
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

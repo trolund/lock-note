@@ -33,7 +33,7 @@ const createNote = async (note: NoteDto) => {
     },
     body: JSON.stringify(note),
   });
-  return res.json();
+  return res.json() as Promise<NoteDto>;
 };
 
 // use the useMutation hook to create a note

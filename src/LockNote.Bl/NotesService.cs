@@ -6,7 +6,7 @@ namespace LockNote.Bl;
 
 public class NotesService(IRepository<Note> notesRepository)
 {
-    public async Task CreateNoteAsync(NoteDto note)
+    public async Task<NoteDto> CreateNoteAsync(NoteDto note)
     {
         var noteModel = new Note
         {
@@ -17,15 +17,14 @@ public class NotesService(IRepository<Note> notesRepository)
         
         if(note.Password == null)
         {
-            await notesRepository.AddAsync(noteModel);
-            return;
+            return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
         }
 
         var (salt, hashed) = PasswordHashService.HashPassword(note.Password);
 
         noteModel.PasswordHash = hashed;
         noteModel.Salt = salt;
-        await notesRepository.AddAsync(noteModel);
+        return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
     }
 
     public async Task<Note?> GetNoteAsync(string id, string password = "")

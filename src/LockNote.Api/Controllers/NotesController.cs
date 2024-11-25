@@ -13,8 +13,8 @@ namespace LockNote.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateNote(NoteDto noteDto)
         {
-            await notesService.CreateNoteAsync(noteDto);
-            return Ok();
+            var note = await notesService.CreateNoteAsync(noteDto);
+            return Ok(note);
         }
         
         [HttpGet]

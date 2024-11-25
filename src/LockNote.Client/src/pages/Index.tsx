@@ -5,7 +5,7 @@ import { NoteDto } from "../types/NoteDto";
 
 export const Index = () => {
   const queryClient = useQueryClient();
-  const { mutate } = useCreateNote(queryClient);
+  const { mutate, data } = useCreateNote(queryClient);
 
   // state to store the message
   const [message, setMessage] = useState<string>("");
@@ -31,6 +31,7 @@ export const Index = () => {
       >
         Create note
       </button>
+      <p>ID:{data?.id}</p>
       <p className="mt-5">your note is automatically deleted after a month</p>
     </div>
   );
