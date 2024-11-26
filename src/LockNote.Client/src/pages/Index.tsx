@@ -3,6 +3,8 @@ import { useCreateNote } from "../api/client";
 import { useQueryClient } from "react-query";
 import { NoteDto } from "../types/NoteDto";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 
 export const Index = () => {
   const queryClient = useQueryClient();
@@ -22,18 +24,21 @@ export const Index = () => {
 
   if (data) {
     return (
-      <div className="max-w-2xl mx-auto min-h-8">
+      <div className="flex-col gap-4 max-w-2xl mx-auto min-h-8">
         <p>Your note has been created! You can access it at</p>
-        <Link
-          to={`${baseUrl}/note/${data.id}`}
-        >{`${baseUrl}/note/${data.id}`}</Link>
-        <button
-          type="button"
-          className="px-4 py-2 mt-5 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-          onClick={() => copyToClipboard(data)}
-        >
-          Copy to clipboard
-        </button>
+        <div className="flex flex-col">
+          <Link
+            to={`${baseUrl}/note/${data.id}`}
+          >{`${baseUrl}/note/${data.id}`}</Link>
+          <button
+            type="button"
+            className="px-4 py-2 mt-5 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+            onClick={() => copyToClipboard(data)}
+          >
+            <FontAwesomeIcon icon={faClipboard} className="mr-2" />
+            Copy to clipboard
+          </button>
+        </div>
       </div>
     );
   }

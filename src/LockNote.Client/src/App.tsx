@@ -10,15 +10,15 @@ function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout>
-        <BrowserRouter>
+      <BrowserRouter>
+        <Layout>
           <Routes>
             <Route index element={<Index />}></Route>
             <Route path="note/:noteId" element={<ReadNote />}></Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>
-        </BrowserRouter>
-      </Layout>
+        </Layout>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 }
