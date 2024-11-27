@@ -14,8 +14,8 @@ public class NotesService(IRepository<Note> notesRepository)
             Content = note.Content,
             CreatedAt = DateTime.UtcNow
         };
-        
-        if(note.Password == null)
+
+        if (note.Password == null)
         {
             return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
         }
@@ -30,14 +30,19 @@ public class NotesService(IRepository<Note> notesRepository)
     public async Task<Note?> GetNoteAsync(string id, string password = "")
     {
         var entity = await notesRepository.GetByIdAsync(id, "Note");
-        
+
         // if a password is set but not correct, return null
-        if(entity?.PasswordHash != null && !PasswordHashService.VerifyPassword(password, entity.Salt!, entity.PasswordHash))
+        if (entity?.PasswordHash != null &&
+            !PasswordHashService.VerifyPassword(password, entity.Salt!, entity.PasswordHash))
         {
-            return null;
-        }   
-        
-        
+            return new Note()
+            {
+                Content = "Enter the correct password to view the note", Id = "passwordMissing",
+                CreatedAt = DateTime.UtcNow
+            };
+        }
+
+
         return entity;
     }
 

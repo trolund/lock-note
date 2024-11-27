@@ -13,18 +13,26 @@ export const useGetNotes = () => {
   return useQuery<NoteDto[], Error>("notes", fetchNotes);
 };
 
-// do the same for the getNoteById function
-const fetchNoteById = async (id: string) => {
-  const res = await fetch(`${baseUrl}/api/Notes/${id}`);
+// create a custom hook to fetch notes by id and password
+const fetchNoteByIdAndPassword = async (
+  id: string,
+  password?: string | null,
+) => {
+  const url = new URL(`${baseUrl}/api/Notes/${id}`);
+
+  if (password) {
+    url.searchParams.append("password", password);
+  }
+
+  const res = await fetch(url);
   return res.json();
 };
 
-export const useGetNoteById = (id: string) => {
-  return useQuery<NoteDto, Error>(["note", id], () => fetchNoteById(id));
+export const useGetNoteById = (id: string, password?: string | null) => {
+  return useQuery<NoteDto, Error>(["note", id], () =>
+    fetchNoteByIdAndPassword(id, password),
+  );
 };
-
-// do the same for the createNote function
-
 const createNote = async (note: NoteDto) => {
   const res = await fetch(baseUrl + "/api/Notes", {
     method: "POST",

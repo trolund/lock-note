@@ -6,13 +6,9 @@ public class NoteDto
 {
     public string? Id { get; init; }
     public int? ReadBeforeDelete { get; init; }
-    
     public required string Content { get; init; }
-    
     public DateTime? CreatedAt { get; init; }
-    
     public string? Password { get; set; }
-    
     public static NoteDto FromModel(Note note)
     {
         return new NoteDto

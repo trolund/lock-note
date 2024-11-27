@@ -1,14 +1,42 @@
 import { useParams } from "react-router-dom";
 import { useGetNoteById } from "../api/client";
+import { useState } from "react";
 
 export const ReadNote = () => {
   const { noteId } = useParams();
+
+  // state of password input
+  const [password, setPassword] = useState<string | null>(null);
 
   if (!noteId) {
     return <h1>Invalid noteId</h1>;
   }
 
-  const { data, isLoading } = useGetNoteById(noteId);
+  const { data, isLoading, refetch } = useGetNoteById(noteId, password);
+
+  if (data?.id === "passwordMissing") {
+    return (
+      <div>
+        <h1>Password Missing</h1>
+        <p>The note you are trying to access is password protected. </p>
+        <p>Please enter the password to view the note.</p>
+        <label className="text-sm font-medium text-gray-400">Password</label>
+        <input
+          type="password"
+          className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+          placeholder="Enter the password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button
+          type="button"
+          className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+          onClick={() => refetch()}
+        >
+          Submit
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -20,7 +48,7 @@ export const ReadNote = () => {
           <textarea
             id="message"
             title="note content"
-            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
             readOnly
             disabled
           >
