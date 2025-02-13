@@ -18,12 +18,13 @@ Use azure cli to create service principal:
 
 ```bash
 az ad sp create-for-rbac --name "github-actions-bicep-deploy" --role contributor \
-  --scopes /subscriptions/b5e84508-5c27-44d5-bcbe-25762d6f6de9 --sdk-auth
+  --scopes /subscriptions/<subscription-id> --sdk-auth
 ```
 
 #### Create secrets
 
-this will output a JSON object this entire object should be put in to the secret `AZURE_CREDENTIALS`
+this will output a JSON object this entire object should be put in to the secret `AZURE_CREDENTIALS` as seen on the picture below:
 
+![alt text](docs/secrets.png)
 
-
+`AZURE_LOCATION` can be set to *northeurope* for the North Europe data center. `AZURE_RESOURCE_GROUP` is set to the *subscription-id* of the subscription in Azure.
