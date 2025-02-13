@@ -1,10 +1,11 @@
 using LockNote.Data.Model;
+using Microsoft.Extensions.Logging;
 
 namespace LockNote.Data;
 
 using Microsoft.Azure.Cosmos;
 
-public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T> 
+public class CosmosRepository<T>(ICosmosDbService cosmosDbService, ILogger<CosmosRepository<T>> logger) : IRepository<T> 
     where T : BaseItem
 {
     private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
@@ -18,6 +19,12 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
+            logger.Log(LogLevel.Critical, ex.Message);
+            return null;
+        }
+        catch (CosmosException ex)
+        {
+            logger.Log(LogLevel.Critical, ex.Message);
             return null;
         }
     }

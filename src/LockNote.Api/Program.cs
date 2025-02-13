@@ -1,5 +1,7 @@
 using LockNote.Data;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace LockNote;
 
@@ -9,6 +11,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
+            .CreateLogger();
+
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddHttpContextAccessor();
@@ -16,7 +22,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddCustomServices();
-        
+
         builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDb"));
         builder.Services.AddSingleton<ICosmosDbService>(provider =>
         {
@@ -33,7 +39,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        
+
         app.UseCors(policyBuilder =>
         {
             // TODO: fix hardcoded ip
@@ -42,12 +48,13 @@ public class Program
                 .AllowAnyMethod();
         });
 
+        // if cosmos db database and container is does not exsist create it
+
         app.UseDefaultFiles();
         app.UseStaticFiles();
-        
+
         app.UseHttpsRedirection();
         app.UseAuthorization();
-
 
         app.MapControllers();
 
