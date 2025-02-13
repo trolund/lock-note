@@ -17,8 +17,7 @@ public class CosmosDbService(string? connectionString, CosmosDbSettings settings
 
     public async Task<Container> GetContainerAsync()
     {
-        var database = await _cosmosClient.CreateDatabaseIfNotExistsAsync(_databaseName, 4000,
-            new RequestOptions() { PriorityLevel = PriorityLevel.High });
+        var database = await _cosmosClient.CreateDatabaseIfNotExistsAsync(_databaseName, 4000);
         return await database.Database.CreateContainerIfNotExistsAsync(_containerName, "/partitionKey", 4000);
     }
 }
