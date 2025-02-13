@@ -19,12 +19,6 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService, ILogger<Cosmo
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            logger.Log(LogLevel.Critical, ex.Message);
-            return null;
-        }
-        catch (CosmosException ex)
-        {
-            logger.Log(LogLevel.Critical, ex.Message);
             return null;
         }
     }
