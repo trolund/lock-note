@@ -24,7 +24,7 @@ public class Program
         builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDb"));
         builder.Services.AddSingleton<ICosmosDbService>(provider =>
         {
-            var connectionString = builder.Configuration.GetConnectionString("CosmosDb");
+            var connectionString = builder.Configuration.GetSection("COSMOS_DB_CONNECTION_STRING").Value;
             var settings = provider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
             return new CosmosDbService(connectionString, settings);
         });
