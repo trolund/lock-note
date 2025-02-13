@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import NoteForm from "../component/note-form";
+import { isProduction } from "../api/node";
 
 export const Index = () => {
   const queryClient = useQueryClient();
   const { mutate, data, reset } = useCreateNote(queryClient);
 
-  const baseUrl = import.meta.env.VITE_FRONTEND_BASE_URL;
+  const baseUrl = isProduction() ? import.meta.env.VITE_FRONTEND_BASE_URL : "";
 
   // copy to clipboard button
   const copyToClipboard = async (data: NoteDto) => {
