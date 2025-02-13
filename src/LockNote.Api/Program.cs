@@ -1,7 +1,5 @@
 using LockNote.Data;
-using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Options;
-using Serilog;
 
 namespace LockNote;
 
