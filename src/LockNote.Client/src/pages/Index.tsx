@@ -8,7 +8,7 @@ import NoteForm from "../component/note-form";
 
 export const Index = () => {
   const queryClient = useQueryClient();
-  const { mutate, data } = useCreateNote(queryClient);
+  const { mutate, data, reset } = useCreateNote(queryClient);
 
   const baseUrl = import.meta.env.VITE_FRONTEND_BASE_URL;
 
@@ -23,7 +23,13 @@ export const Index = () => {
 
   if (data) {
     return (
-      <div className="mx-auto min-h-8 max-w-2xl flex-col gap-4">
+      <div className="mx-auto flex min-h-8 max-w-2xl flex-col gap-4">
+        <button
+          onClick={reset}
+          className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+        >
+          Back
+        </button>
         <p>Your note has been created! You can access it at</p>
         <div className="flex flex-col">
           <Link

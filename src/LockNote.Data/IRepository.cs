@@ -6,5 +6,5 @@ public interface IRepository<T> where T : class
     Task<IEnumerable<T>> GetAllAsync(string query);
     Task<T> AddAsync(T entity);
     Task UpdateAsync(string id, T entity);
-    Task DeleteAsync(string id);
+    Task DeleteAsync(string id, string partitionKey);
 }

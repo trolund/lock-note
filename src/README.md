@@ -1,18 +1,29 @@
-# react-spa
+# Lock Note
 
-.NET 8.0 react-spa Pages Tailwind Website
+## 🚀 Up and running
 
-[![](https://raw.githubusercontent.com/ServiceStack/Assets/master/csharp-templates/react-spa.png)](http://react-spa.web-templates.io)
+### Locally
 
-> Browse [source code](https://github.com/NetCoreTemplates/react-spa), view live demo [react-spa.web-templates.io](http://react-spa.web-templates.io) and install with [dotnet-new](https://docs.servicestack.net/dotnet-new):
+Run the cosmos emulator in docker by running the script `cosmosdblocalsetupScript.sh`
 
-    $ dotnet tool install -g x
+```bash
+./scripts/cosmosdblocalsetupScript.sh
+```
 
-    $ x new react-spa ProjectName
+Then just run the project and everything should work.
 
-Alternatively write new project files directly into an empty repository, using the Directory Name as the ProjectName:
+### In the Cloud ☁️
 
-    $ git clone https://github.com/<User>/<ProjectName>.git
-    $ cd <ProjectName>
-    $ x new react-spa
+Use azure cli to create service principal:
+
+```bash
+az ad sp create-for-rbac --name "github-actions-bicep-deploy" --role contributor \
+  --scopes /subscriptions/b5e84508-5c27-44d5-bcbe-25762d6f6de9 --sdk-auth
+```
+
+#### Create secrets
+
+this will output a JSON object this entire object should be put in to the secret `AZURE_CREDENTIALS`
+
+
 

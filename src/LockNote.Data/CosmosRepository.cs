@@ -46,9 +46,8 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         await _container.UpsertItemAsync(entity, new PartitionKey(id));
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(string id, string partitionKey)
     {
-        var partitionKey = typeof(T).GetProperty("PartitionKey")?.GetValue(null)?.ToString();
         await _container.DeleteItemAsync<T>(id, new PartitionKey(partitionKey));
     }
 }

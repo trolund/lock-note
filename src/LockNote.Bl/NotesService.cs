@@ -50,4 +50,17 @@ public class NotesService(IRepository<Note> notesRepository)
     {
         return await notesRepository.GetAllAsync("SELECT * FROM c");
     }
+
+    public async Task DeleteAllOverMonthOld()
+    {
+        // all notes where CreatedAt is more then a month ago
+        var items = await notesRepository.GetAllAsync("SELECT * FROM c WHERE c.CreatedAt < " +
+                                          DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ssZ"));
+        
+        foreach (var item in items)
+        {
+            await notesRepository.DeleteAsync(item.Id, "Note");
+        }
+    }
+    
 }
