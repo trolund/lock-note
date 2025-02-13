@@ -5,13 +5,10 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-solid-svg-icons";
 import NoteForm from "../component/note-form";
-import { isProduction } from "../api/node";
 
 export const Index = () => {
   const queryClient = useQueryClient();
   const { mutate, data, reset } = useCreateNote(queryClient);
-
-  const baseUrl = isProduction() ? import.meta.env.VITE_FRONTEND_BASE_URL : "";
 
   // copy to clipboard button
   const copyToClipboard = async (data: NoteDto) => {
@@ -19,6 +16,8 @@ export const Index = () => {
       return;
     }
 
+    // get base url from window object
+    const baseUrl = window.location.origin;
     await navigator.clipboard.writeText(`${baseUrl}/note/${data?.id}`);
   };
 
@@ -33,9 +32,7 @@ export const Index = () => {
         </button>
         <p>Your note has been created! You can access it at</p>
         <div className="flex flex-col">
-          <Link
-            to={`${baseUrl}/note/${data.id}`}
-          >{`${baseUrl}/note/${data.id}`}</Link>
+          <Link to={`note/${data.id}`}>{`note/${data.id}`}</Link>
           <button
             type="button"
             className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
