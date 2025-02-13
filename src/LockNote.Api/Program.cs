@@ -11,9 +11,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
-            .CreateLogger();
+        // Log.Logger = new LoggerConfiguration()
+        //     .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
+        //     .CreateLogger();
 
         // Add services to the container.
         builder.Services.AddControllers();
