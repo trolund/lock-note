@@ -2,7 +2,7 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import { NoteDto } from "../types/NoteDto";
 import { isProduction } from "./node";
 
-const baseUrl = isProduction() ? import.meta.env.VITE_BACKEND_BASE_URL : "";
+const baseUrl = isProduction() ? "" : import.meta.env.VITE_BACKEND_BASE_URL;
 
 const fetchNotes = async () => {
   const res = await fetch(baseUrl + "/api/Notes");
@@ -34,8 +34,9 @@ export const useGetNoteById = (id: string, password?: string | null) => {
     fetchNoteByIdAndPassword(id, password),
   );
 };
+
 const createNote = async (note: NoteDto) => {
-  const res = await fetch(baseUrl + "/api/Notes", {
+  const res = await fetch(`${baseUrl}/api/Notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

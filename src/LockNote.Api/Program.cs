@@ -36,6 +36,7 @@ public class Program
         
         app.UseCors(policyBuilder =>
         {
+            // TODO: fix hardcoded ip
             policyBuilder.WithOrigins("http://localhost:5173")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
