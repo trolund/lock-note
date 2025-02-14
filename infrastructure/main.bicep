@@ -1,6 +1,6 @@
 param location string = resourceGroup().location
 param cosmosDbAccountName string = 'locknotecosmosdb'
-param functionStorageAccountName string = 'locknotefunctionappstorage'
+param functionStorageAccountName string = 'locknotefuncappstorage'
 
 // Reference the Cosmos DB module
 module cosmosDbModule './cosmos-db.bicep' = {
@@ -56,7 +56,7 @@ resource funcStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 }
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'locknotefuncapp'
+  name: 'LockNoteFuncApp'
   location: location
   kind: 'functionapp'
   properties: {
