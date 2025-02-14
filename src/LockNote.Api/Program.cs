@@ -9,10 +9,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Log.Logger = new LoggerConfiguration()
-        //     .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
-        //     .CreateLogger();
-
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddHttpContextAccessor();
@@ -45,8 +41,6 @@ public class Program
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
-
-        // if cosmos db database and container is does not exsist create it
 
         app.UseDefaultFiles();
         app.UseStaticFiles();
