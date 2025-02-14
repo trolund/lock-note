@@ -2,7 +2,9 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import { NoteDto } from "../types/NoteDto";
 import { isProduction } from "./node";
 
-const baseUrl = isProduction() ? "" : import.meta.env.VITE_BACKEND_BASE_URL;
+const baseUrl = isProduction()
+  ? window.location.origin
+  : import.meta.env.VITE_BACKEND_BASE_URL;
 
 const fetchNotes = async () => {
   const res = await fetch(baseUrl + "/api/Notes");
