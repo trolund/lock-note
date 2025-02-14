@@ -10,7 +10,7 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
 env:
-  AZURE_FUNCTIONAPP_NAME: lock-note-function-app # Change this
+  AZURE_FUNCTIONAPP_NAME: LockNoteFuncApp # Change this
 
 jobs:
   deploy:
