@@ -36,6 +36,16 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
+resource funcServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: 'function-app-plan'
+  location: location
+  kind: 'functionapp'
+  sku: {
+    tier: 'Dynamic' // ✅ Consumption Plan (Pay-per-use)
+    name: 'Y1'
+  }
+}
+
 resource funcStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: functionStorageAccountName
   location: location
@@ -50,7 +60,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   location: location
   kind: 'functionapp'
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: funcServicePlan.id
     siteConfig: {
       appSettings: [
         {
