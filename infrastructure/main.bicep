@@ -37,7 +37,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 resource funcServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'LockNoteFunctionAppPlan'
+  name: 'LockNoteFuncAppPlan'
   location: location
   kind: 'functionapp'
   sku: {
@@ -56,7 +56,7 @@ resource funcStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 }
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'LockNoteFunctionApp'
+  name: 'locknotefuncapp'
   location: location
   kind: 'functionapp'
   properties: {
