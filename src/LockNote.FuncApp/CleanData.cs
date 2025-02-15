@@ -20,14 +20,4 @@ public class CleanData(ILogger<CleanData> logger)
             
         }
     }
-    
-    // http trigger
-    [Function("CleanDataHttp")]
-    public HttpResponseData RunHttp([HttpTrigger("get")] HttpRequestData req)
-    {
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-        response.WriteString("Hello, world!");
-        return response;
-    }
 }
