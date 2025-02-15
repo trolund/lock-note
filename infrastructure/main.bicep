@@ -79,6 +79,8 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'COSMOS_DB_CONNECTION_STRING'
           value: cosmosDbModule.outputs.cosmosDbConnectionString
         }
+        { name: 'COSMOS_DB_NAME', value: 'LockNote' }
+        { name: 'COSMOS_CON_NAME', value: 'Notes' }
       ]
     }
   }
