@@ -16,12 +16,13 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddCustomServices();
-
-        builder.Services.Configure<CosmosDbSettings>(builder.Configuration.GetSection("CosmosDb"));
-        builder.Services.AddSingleton<ICosmosDbService>(provider =>
+        
+        builder.Services.AddSingleton<ICosmosDbService>(_ =>
         {
             var connectionString = builder.Configuration.GetSection("COSMOS_DB_CONNECTION_STRING").Value;
-            var settings = provider.GetRequiredService<IOptions<CosmosDbSettings>>().Value;
+            var dbName = builder.Configuration.GetSection("COSMOS_DB_NAME").Value;
+            var containerName = builder.Configuration.GetSection("COSMOS_CON_NAME").Value;
+            var settings = new CosmosDbSettings(){DatabaseName = dbName ?? "", ContainerName = containerName ?? ""};
             return new CosmosDbService(connectionString, settings);
         });
 

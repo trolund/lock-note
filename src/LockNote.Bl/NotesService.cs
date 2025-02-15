@@ -1,10 +1,13 @@
+using System.Globalization;
 using LockNote.Data;
 using LockNote.Data.Model;
 using LockNote.Infrastructure.Dtos;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Logging;
 
 namespace LockNote.Bl;
 
-public class NotesService(IRepository<Note> notesRepository)
+public class NotesService(IRepository<Note> notesRepository, ILogger<NotesService> logger)
 {
     public async Task<NoteDto> CreateNoteAsync(NoteDto note)
     {
@@ -48,19 +51,22 @@ public class NotesService(IRepository<Note> notesRepository)
 
     public async Task<IEnumerable<Note>> GetAllNotesAsync()
     {
-        return await notesRepository.GetAllAsync("SELECT * FROM c");
+        return await notesRepository.GetAllAsync(new QueryDefinition("SELECT * FROM c"));
     }
 
     public async Task DeleteAllOverMonthOld()
     {
         // all notes where CreatedAt is more then a month ago
-        var items = await notesRepository.GetAllAsync("SELECT * FROM c WHERE c.CreatedAt < " +
-                                          DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ssZ"));
-        
+        var query = new QueryDefinition("SELECT * FROM c WHERE c.CreatedAt < '2025-02-15T10:40:22.723444Z'")
+            .WithParameter("@today", DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"));
+        Console.WriteLine(DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"));
+        var items = (await notesRepository.GetAllAsync(query)).ToList();
+
         foreach (var item in items)
         {
             await notesRepository.DeleteAsync(item.Id, "Note");
         }
+
+        logger.LogWarning("Deleted {Count} notes", items.Count());
     }
-    
 }

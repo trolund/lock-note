@@ -23,9 +23,9 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService, ILogger<Cosmo
         }
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(string query)
+    public async Task<IEnumerable<T>> GetAllAsync(QueryDefinition query)
     {
-        var queryIterator = _container.GetItemQueryIterator<T>(new QueryDefinition(query));
+        var queryIterator = _container.GetItemQueryIterator<T>(query);
         var results = new List<T>();
 
         while (queryIterator.HasMoreResults)
