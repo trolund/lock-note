@@ -69,7 +69,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet'
+          value: 'dotnet-isolated' // ✅ Correct for .NET Isolated
+        }
+        {
+          name: 'DOTNET_ISOLATED_VERSION'
+          value: '8.0' // ✅ Ensure correct .NET version (adjust if needed)
         }
         {
           name: 'COSMOS_DB_CONNECTION_STRING'
