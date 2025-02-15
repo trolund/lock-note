@@ -57,9 +57,8 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
     public async Task DeleteAllOverMonthOld()
     {
         // all notes where CreatedAt is more then a month ago
-        var query = new QueryDefinition("SELECT * FROM c WHERE c.CreatedAt < '2025-02-15T10:40:22.723444Z'")
-            .WithParameter("@today", DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"));
-        Console.WriteLine(DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ"));
+        var query = new QueryDefinition($"SELECT * FROM c WHERE c.CreatedAt < '{DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ")}'");
+        
         var items = (await notesRepository.GetAllAsync(query)).ToList();
 
         foreach (var item in items)
