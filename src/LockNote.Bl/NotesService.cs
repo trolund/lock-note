@@ -18,7 +18,7 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
             CreatedAt = DateTime.UtcNow
         };
 
-        if (note.Password == null)
+        if (note.Password is null)
         {
             return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
         }
@@ -27,6 +27,7 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
 
         noteModel.PasswordHash = hashed;
         noteModel.Salt = salt;
+        noteModel.Content = Encryption.Encrypt(note.Content, note.Password);
         return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
     }
 
@@ -40,11 +41,16 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
         {
             return new Note()
             {
-                Content = "Enter the correct password to view the note", Id = "passwordMissing",
+                Content = "Enter the correct password to view the note", Id = "passwordIncorrect",
                 CreatedAt = DateTime.UtcNow
             };
         }
 
+        // if a password is set and correct, decrypt the content
+        if (entity?.PasswordHash != null)
+        {
+            entity.Content = Encryption.Decrypt(entity.Content, password);
+        }
 
         return entity;
     }
@@ -57,8 +63,9 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
     public async Task DeleteAllOverMonthOld()
     {
         // all notes where CreatedAt is more then a month ago
-        var query = new QueryDefinition($"SELECT * FROM c WHERE c.CreatedAt < '{DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ")}'");
-        
+        var query = new QueryDefinition(
+            $"SELECT * FROM c WHERE c.CreatedAt < '{DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ")}'");
+
         var items = (await notesRepository.GetAllAsync(query)).ToList();
 
         foreach (var item in items)

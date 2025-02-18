@@ -4,7 +4,7 @@ public class Note() : BaseItem("Note")
 {
     public int ReadBeforeDelete { get; init; } = 1;
     
-    public required string Content { get; init; }
+    public required string Content { get; set; }
     
     public required DateTime CreatedAt { get; init; }
     
