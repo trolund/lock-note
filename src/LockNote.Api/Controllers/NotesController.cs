@@ -1,5 +1,4 @@
 using LockNote.Bl;
-using LockNote.Data.Model;
 using LockNote.Infrastructure.Dtos;
 using Microsoft.AspNetCore.Mvc;
 

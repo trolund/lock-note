@@ -4,7 +4,13 @@ on:
   pull_request: # Trigger the workflow on pull requests
     branches:
       - main
+  push: # Trigger the workflow on push
+    branches:
+      - fix-func-app
   workflow_dispatch: # Allows manual triggering of the workflow
+
+env:
+  AZURE_FUNCTIONAPP_NAME: LockNoteFuncApp # Change this
 
 jobs:
   deploy:
@@ -79,11 +85,22 @@ jobs:
         working-directory: ./src
         run: dotnet publish -c Release -o ./publish
 
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
         with:
           app-name: "LockNoteApp" # Your Azure Web App name
           slot-name: "production"
-          # publish-profile: ${{ env.PUBLISH_PROFILE }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./src/publish
+
+      - name: Build and publish function app project
+        run: |
+          cd ./src/LockNote.FuncApp
+          dotnet build --configuration Release
+          dotnet publish --configuration Release --output ./publish-func-app
+
+      - name: Deploy Function App
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: "./src/LockNote.FuncApp/publish-func-app/"
