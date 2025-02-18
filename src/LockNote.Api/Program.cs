@@ -12,23 +12,27 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddHttpContextAccessor();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddCustomServices();
-        
+
         builder.Services.AddSingleton<ICosmosDbService>(_ =>
         {
             var connectionString = builder.Configuration.GetSection("COSMOS_DB_CONNECTION_STRING").Value;
             var dbName = builder.Configuration.GetSection("COSMOS_DB_NAME").Value;
             var containerName = builder.Configuration.GetSection("COSMOS_CON_NAME").Value;
-            var settings = new CosmosDbSettings(){DatabaseName = dbName ?? "", ContainerName = containerName ?? ""};
+            if (dbName == null || containerName == null)
+            {
+                throw new ArgumentException("Database name and container name are required");
+            }
+
+            var settings = new CosmosDbSettings(DatabaseName: dbName, containerName);
             return new CosmosDbService(connectionString, settings);
         });
 
         var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
+        
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

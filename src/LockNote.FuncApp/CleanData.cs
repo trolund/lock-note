@@ -10,6 +10,6 @@ public class CleanData(ILogger<CleanData> logger, NotesService notesService)
     public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
     {
         _ = notesService.DeleteAllOverMonthOld();
-        logger.LogWarning("Deleted all old notes");
+        logger.LogInformation("Deleted all old notes");
     }
 }

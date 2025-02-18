@@ -1,4 +1,3 @@
-using System.Globalization;
 using LockNote.Data;
 using LockNote.Data.Model;
 using LockNote.Infrastructure.Dtos;
@@ -73,6 +72,6 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
             await notesRepository.DeleteAsync(item.Id, "Note");
         }
 
-        logger.LogWarning("Deleted {Count} notes", items.Count());
+        logger.LogInformation("Deleted {Count} notes", items.Count);
     }
 }
