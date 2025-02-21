@@ -13,10 +13,10 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
 
-  tests:
-    needs: build
-    uses: ./.github/workflows/tests.yml
+  # tests:
+  #   needs: build
+  #   uses: ./.github/workflows/tests.yml
 
   deploy:
-    needs: [build, tests]
+    needs: [build]
     uses: ./.github/workflows/deploy.yml

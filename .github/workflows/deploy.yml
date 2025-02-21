@@ -8,13 +8,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Login to Azure
+      - name: Download build artifacts of API and Frontend
+        uses: actions/download-artifact@v2
+        with:
+          name: build-front-and-api
+
+      - name: Download build artifacts of Function App
+        uses: actions/download-artifact@v2
+        with:
+          name: build-func-app
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Deploy Bicep
       - name: Create infrastructure
         run: |
           az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
@@ -35,7 +43,6 @@ jobs:
           echo "Using the connection string..."
           echo "Connection String: ${{ env.connectionString }}"
 
-      # Retrieve Publish Profile
       - name: Get Publish Profile
         id: get-publish-profile
         run: |
@@ -50,7 +57,6 @@ jobs:
 
           echo ${{ env.PUBLISH_PROFILE }}
 
-      # Deploy to Azure Web App
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
         with:
@@ -59,7 +65,6 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./src/publish
 
-      # Deploy Function App
       - name: Deploy Function App
         uses: Azure/functions-action@v1
         with:
