@@ -6,12 +6,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    <PropertyGroup>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    </PropertyGroup>
-    <PropertyGroup>
-        <AnalysisLevel>latest</AnalysisLevel>
-    </PropertyGroup>
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
         <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />

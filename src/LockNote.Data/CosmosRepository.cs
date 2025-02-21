@@ -5,7 +5,7 @@ namespace LockNote.Data;
 
 using Microsoft.Azure.Cosmos;
 
-public class CosmosRepository<T>(ICosmosDbService cosmosDbService, ILogger<CosmosRepository<T>> logger) : IRepository<T> 
+public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository<T> 
     where T : BaseItem
 {
     private readonly Container _container = cosmosDbService.GetContainerAsync().GetAwaiter().GetResult();
@@ -19,7 +19,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService, ILogger<Cosmo
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            return null;
+            return null!;
         }
     }
 

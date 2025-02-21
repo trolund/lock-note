@@ -6,15 +6,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <AnalysisLevel>latest</AnalysisLevel>
-    </PropertyGroup>
-
-
     <ItemGroup>
       <ProjectReference Include="..\LockNote.Data\LockNote.Data.csproj" />
       <ProjectReference Include="..\LockNote.Infrastructure\LockNote.Infrastructure.csproj" />

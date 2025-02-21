@@ -11,14 +11,6 @@
         <RootNamespace>LockNote</RootNamespace>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <AnalysisLevel>latest</AnalysisLevel>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.11" />
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">

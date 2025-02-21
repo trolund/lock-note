@@ -38,16 +38,7 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
     </ItemGroup>
-
-    <PropertyGroup>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <AnalysisLevel>latest</AnalysisLevel>
-    </PropertyGroup>
-
-
+    
     <ItemGroup>
         <None Update="appsettings.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -9,15 +9,6 @@
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <AnalysisLevel>latest</AnalysisLevel>
-    </PropertyGroup>
-
-
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
