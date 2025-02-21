@@ -8,13 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build application
-        run: dotnet build --no-restore --configuration Release
-
       - name: Install Playwright Browsers
+        working-directory: ./src
         run: dotnet playwright install
 
       - name: Run Playwright Tests
+        working-directory: ./src
         run: dotnet test --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload Test Results (Optional)
