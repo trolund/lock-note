@@ -14,7 +14,7 @@ export const ReadNote = () => {
 
   const { data, isLoading, refetch } = useGetNoteById(noteId, password);
 
-  if (data?.id === "passwordMissing") {
+  if (data?.id === "passwordIncorrect") {
     return (
       <div>
         <h1>Password Missing</h1>
@@ -22,12 +22,14 @@ export const ReadNote = () => {
         <p>Please enter the password to view the note.</p>
         <label className="text-sm font-medium text-gray-400">Password</label>
         <input
+          data-testid="password-input"
           type="password"
           className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
           placeholder="Enter the password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <button
+          data-testid="submit-btn"
           type="button"
           className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
           onClick={() => refetch()}

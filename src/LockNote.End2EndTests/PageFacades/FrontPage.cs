@@ -1,3 +1,5 @@
+using LockNote.End2EndTests.PageFacades.General;
+
 namespace LockNote.End2EndTests.PageFacades;
 
 using System.Threading.Tasks;

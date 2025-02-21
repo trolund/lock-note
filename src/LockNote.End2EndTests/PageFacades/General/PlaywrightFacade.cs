@@ -1,10 +1,7 @@
 using LockNote.End2EndTests.Setup;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace LockNote.End2EndTests.PageFacades;
-
-using System.Threading.Tasks;
 using Microsoft.Playwright;
+
+namespace LockNote.End2EndTests.PageFacades.General;
 
 public abstract class PlaywrightFacade(IPage page): IPlaywrightFacade
 { 
