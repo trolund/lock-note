@@ -14,6 +14,15 @@ jobs:
         env:
           SECRET: ${{ secrets.AZURE_LOCATION }}
 
+      - name: Check if secret is available
+        run: |
+          if [ -z "${{ secrets.MY_SECRET }}" ]; then
+            echo "Secret is empty!"
+            exit 1
+          else
+            echo "Secret is available"
+          fi
+
       - name: Login to Azure
         uses: Azure/login@v2.2.0
         with:
