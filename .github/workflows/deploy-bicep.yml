@@ -57,7 +57,7 @@ jobs:
         id: get-publish-profile
         run: |
           az webapp deployment list-publishing-profiles \
-            --name {{ env.AZURE_WEBAPP_NAME }} \
+            --name ${{ env.AZURE_WEBAPP_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --output json > publishProfile.json
 
