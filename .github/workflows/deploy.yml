@@ -9,12 +9,12 @@ jobs:
 
     steps:
       - name: Download build artifacts of API and Frontend
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: build-front-and-api
 
       - name: Download build artifacts of Function App
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: build-func-app
 
