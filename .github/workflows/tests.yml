@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Install Playwright Browsers
         working-directory: ./src
-        run: dotnet playwright install
+        run: dotnet playwright install || npx playwright install
 
       - name: Run Playwright Tests
         working-directory: ./src
