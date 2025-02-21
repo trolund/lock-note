@@ -32,11 +32,11 @@ public class MainTests : PageTest
     }
 
     [TestCase("This is a test message", "password")]
-    [TestCase("This is a test message \ud83d\ude80", "password")]
-    [TestCase("123_THE_MESSAGE_123", "password")]
-    [TestCase("This is a test message", "123456")]
+    [TestCase("This is a test message \ud83d\ude80", "password1")]
+    [TestCase("123_THE_MESSAGE_123", "PasswordÆæ")]
+    [TestCase("This is a test message", "123456!")]
     [TestCase("This is a test message \ud83d\ude80", "123456")]
-    [TestCase("123_THE_MESSAGE_123", "123456")]
+    [TestCase("123_THE_MESSAGE_123", "123456H")]
     [TestCase("This is a test message", "password-123-123-123-hi-this-is-a-good-password")]
     [TestCase("This is a test message \ud83d\ude80", "password-123-123-123-hi-this-is-a-good-password")]
     [TestCase("123_THE_MESSAGE_123", "p")]
