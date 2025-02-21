@@ -25,6 +25,8 @@ export const Index = () => {
     return (
       <div className="mx-auto flex min-h-8 max-w-2xl flex-col gap-4">
         <button
+          type="button"
+          data-testid="back-btn"
           onClick={reset}
           className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
         >
@@ -32,9 +34,13 @@ export const Index = () => {
         </button>
         <p>Your note has been created! You can access it at</p>
         <div className="flex flex-col">
-          <Link to={`note/${data.id}`}>{`note/${data.id}`}</Link>
+          <Link
+            data-testid="note-link"
+            to={`note/${data.id}`}
+          >{`note/${data.id}`}</Link>
           <button
             type="button"
+            data-testid="clipboard-btn"
             className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
             onClick={() => copyToClipboard(data)}
           >

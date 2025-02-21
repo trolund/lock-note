@@ -46,6 +46,7 @@ export const ReadNote = () => {
       ) : (
         <p>
           <textarea
+            data-testid="message-read"
             id="message"
             title="note content"
             className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
