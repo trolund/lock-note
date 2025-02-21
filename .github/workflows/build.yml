@@ -30,12 +30,12 @@ jobs:
 
       # Restore Dependencies
       - name: Restore dependencies
-        run: |
-          cd ./src
-          dotnet restore
+        working-directory: ./src
+        run: dotnet restore
 
       # Build Application
       - name: Build application
+        working-directory: ./src
         run: dotnet build --no-restore --configuration Release
 
       # Publish Backend and Frontend Together
@@ -46,7 +46,7 @@ jobs:
       # Build and Publish Function App
       # TODO: remove build
       - name: Build and publish function app project
+        working-directory: ./src/LockNote.FuncApp
         run: |
-          cd ./src/LockNote.FuncApp
           dotnet build --configuration Release
           dotnet publish --configuration Release --output ./publish-func-app
