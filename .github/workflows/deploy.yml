@@ -6,17 +6,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      AZURE_CREDS: ${{ secrets.AZURE_CREDENTIALS }}
 
     steps:
       - name: Print part of secret
         run: |
           echo "Secret first 5 characters: ${SECRET:0:5}"
         env:
-          SECRET: ${{ secrets.AZURE_LOCATION }}
+          SECRET: ${{ secrets.AZURE_CREDS }}
 
       - name: Check if secret is available
         run: |
-          if [ -z "${{ secrets.AZURE_CREDENTIALS }}" ]; then
+          if [ -z "${{ env.AZURE_CREDS }}" ]; then
             echo "Secret is empty!"
             exit 1
           else
