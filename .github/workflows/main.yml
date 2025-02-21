@@ -20,10 +20,3 @@ jobs:
   deploy:
     needs: [build]
     uses: ./.github/workflows/deploy.yml
-    with:
-      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-      AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
-      AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
-      AZURE_WEBAPP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
-      COSMOS_CON_NAME: ${{ secrets.COSMOS_CON_NAME }}
-      COSMOS_DB_NAME: ${{ secrets.COSMOS_DB_NAME }}
