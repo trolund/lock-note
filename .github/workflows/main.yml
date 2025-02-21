@@ -20,3 +20,5 @@ jobs:
   deploy:
     needs: [build]
     uses: ./.github/workflows/deploy.yml
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
