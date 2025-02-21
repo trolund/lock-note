@@ -8,6 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Download build artifacts of API and Frontend
         uses: actions/download-artifact@v4
         with:
@@ -17,11 +22,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-func-app
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Create infrastructure
         run: |
