@@ -16,7 +16,7 @@ jobs:
 
       - name: Check if secret is available
         run: |
-          if [ -z "${{ secrets.MY_SECRET }}" ]; then
+          if [ -z "${{ secrets.AZURE_CREDENTIALS }}" ]; then
             echo "Secret is empty!"
             exit 1
           else
