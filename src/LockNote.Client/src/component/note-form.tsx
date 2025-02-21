@@ -45,12 +45,14 @@ export default function NoteForm({ mutate }: NoteFormProps) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2">
         <label
+          data-testid="message-label"
           htmlFor="message"
           className="mb-2 block text-sm font-medium text-gray-400"
         >
           Your message
         </label>
         <textarea
+          data-testid="message"
           id="message"
           className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
           placeholder="Your message..."
@@ -66,12 +68,13 @@ export default function NoteForm({ mutate }: NoteFormProps) {
         >
           {message}
         </textarea>
-        <p className="text-red-500">
+        <p className="text-red-500" data-testid="message-error">
           {errors.message && errors.message.message}
         </p>
       </div>
       <div className="mt-4 space-y-4 rounded-lg border-[1px] border-slate-700 p-4">
         <button
+          data-testid="expand-button"
           type="button"
           onClick={toggleExpand}
           className="w-full bg-slate-900 text-sm text-blue-500 hover:underline"
@@ -140,6 +143,7 @@ export default function NoteForm({ mutate }: NoteFormProps) {
       </div>
 
       <button
+        data-testid="submit-button"
         type="submit"
         className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
       >

@@ -4,13 +4,16 @@ on:
   pull_request: # Trigger the workflow on pull requests
     branches:
       - main
-  push: # Trigger the workflow on push
-    branches:
-      - fix-func-app
+  # push: # Trigger the workflow on push
+  #   branches:
+  #     - fix-func-app
   workflow_dispatch: # Allows manual triggering of the workflow
 
 env:
-  AZURE_FUNCTIONAPP_NAME: LockNoteFuncApp # Change this
+  AZURE_WEBAPP_NAME: LockNoteApp
+  AZURE_FUNCTIONAPP_NAME: LockNoteFuncApp
+  COSMOS_DB_NAME: LockNote
+  COSMOS_CON_NAME: Notes
 
 jobs:
   deploy:
@@ -50,12 +53,11 @@ jobs:
           echo "Connection String: ${{ env.connectionString }}"
 
       # Step 3: Retrieve Publish Profile
-      # TODO wabapp name should be a secret
       - name: Get Publish Profile
         id: get-publish-profile
         run: |
           az webapp deployment list-publishing-profiles \
-            --name LockNoteApp \
+            --name ${{ env.AZURE_WEBAPP_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --output json > publishProfile.json
 
@@ -88,7 +90,7 @@ jobs:
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
         with:
-          app-name: "LockNoteApp" # Your Azure Web App name
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
           slot-name: "production"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./src/publish

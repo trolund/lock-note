@@ -28,3 +28,9 @@ this will output a JSON object this entire object should be put in to the secret
 ![alt text](docs/secrets.png)
 
 `AZURE_LOCATION` can be set to *northeurope* for the North Europe data center. `AZURE_RESOURCE_GROUP` is set to the *subscription-id* of the subscription in Azure.
+
+## Run tests with UI
+
+```bash
+dotnet test --settings:LockNote.End2EndTests/.runsettings
+```
