@@ -4,9 +4,9 @@ on:
   pull_request: # Trigger the workflow on pull requests
     branches:
       - main
-  push: # Trigger the workflow on push
-    branches:
-      - fix-func-app
+  # push: # Trigger the workflow on push
+  #   branches:
+  #     - fix-func-app
   workflow_dispatch: # Allows manual triggering of the workflow
 
 env:
