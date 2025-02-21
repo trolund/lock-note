@@ -8,6 +8,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Debug directory structure
+        run: ls -R
+
       - name: Install Playwright Browsers (Using PowerShell)
         run: pwsh bin/Release/net8.0/playwright.ps1 install
         working-directory: ./src/LockNote.End2EndTests
