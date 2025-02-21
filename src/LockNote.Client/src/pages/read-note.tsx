@@ -18,7 +18,7 @@ export const ReadNote = () => {
     return (
       <div>
         <h1>Password Missing</h1>
-        <p>The note you are trying to access is password protected. </p>
+        <p>The note you are trying to access is password protected.</p>
         <p>Please enter the password to view the note.</p>
         <label className="text-sm font-medium text-gray-400">Password</label>
         <input
