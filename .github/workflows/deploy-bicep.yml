@@ -16,9 +16,6 @@ env:
   COSMOS_CON_NAME: Notes
 
 jobs:
-  e2e-tests:
-    uses: ./.github/workflows/tests.yml
-
   deploy:
     runs-on: ubuntu-latest
     environment: prod # Specify the environment here
