@@ -17,7 +17,7 @@ env:
 
 jobs:
   e2e-tests:
-    uses: ./.github/workflows/flows/tests.yml
+    uses: ./.github/workflows/tests.yml
 
   deploy:
     runs-on: ubuntu-latest
