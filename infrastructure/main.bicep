@@ -1,6 +1,8 @@
 param location string = resourceGroup().location
 param cosmosDbAccountName string = 'locknotecosmosdb'
 param functionStorageAccountName string = 'locknotefuncappstorage'
+param databaseName string = 'LockNote'
+param containerName string = 'Notes'
 
 // Reference the Cosmos DB module
 module cosmosDbModule './cosmos-db.bicep' = {
@@ -31,6 +33,8 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
           name: 'COSMOS_DB_CONNECTION_STRING'
           value: cosmosDbModule.outputs.cosmosDbConnectionString
         }
+        { name: 'COSMOS_DB_NAME', value: databaseName }
+        { name: 'COSMOS_CON_NAME', value: containerName }
       ]
     }
   }
@@ -79,8 +83,8 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'COSMOS_DB_CONNECTION_STRING'
           value: cosmosDbModule.outputs.cosmosDbConnectionString
         }
-        { name: 'COSMOS_DB_NAME', value: 'LockNote' }
-        { name: 'COSMOS_CON_NAME', value: 'Notes' }
+        { name: 'COSMOS_DB_NAME', value: databaseName }
+        { name: 'COSMOS_CON_NAME', value: containerName }
       ]
     }
   }
