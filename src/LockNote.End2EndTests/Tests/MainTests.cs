@@ -6,27 +6,28 @@ namespace LockNote.End2EndTests.Tests;
 [TestFixture]
 public class MainTests : PageTest
 {
-    [Test]
-    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
+    [TestCase("This is a test message")]
+    [TestCase("This is a test message \ud83d\ude80")]
+    [TestCase("123_THE_MESSAGE_123")]
+    public async Task WHEN_ANoteIsCreated_THEN_TheNoteIsStored(string message)
     {
         var page = new FrontPage(Page);
-
+        
+        // Go to the page
         await page.GoToPageAsync();
         
-        var title = await Page.TitleAsync();
-        
-        Assert.That(title, Is.EqualTo("LockNote - Share secrets safely"));
-
-        await Page.PauseAsync();
-        
-        await page.EnterMessageAsync("This is a test message");
+        // Enter the message and submit
+        await page.EnterMessageAsync(message);
         await page.ClickSubmitAsync();
         
-        var noteLink = await page.GetNoteLinkAsync();
+        // get the note page to read the message
         await page.ClickNoteLinkAsync();
         
+        var notePage = new ReadNotePage(Page);
         
-
-
+        // read the message
+        var storedMessage = await notePage.GetMessageAsync();
+        
+        Assert.That(message, Is.EqualTo(storedMessage));
     }
 }

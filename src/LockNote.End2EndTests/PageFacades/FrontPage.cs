@@ -53,16 +53,26 @@ public class FrontPage(IPage page) : PlaywrightFacade(page, "/")
         await selector.ClickAsync();
     }
 
-    public async Task<string> GetNoteLinkAsync()
+    public async Task<string> GetNoteLinkTextAsync()
     {
         var selector = _page.GetByTestId("note-link");
         return await selector.InnerTextAsync();
+    }
+    
+    // get note link href
+    public async Task<string?> GetNoteLinkHrefAsync()
+    {
+        var selector = _page.GetByTestId("note-link");
+        return await selector.GetAttributeAsync("href");
     }
 
     public async Task ClickNoteLinkAsync()
     {
         var selector = _page.GetByTestId("note-link");
+        var url = await GetNoteLinkHrefAsync();
+        
         await selector.ClickAsync();
+        await _page.WaitForURLAsync($"**{url}", new PageWaitForURLOptions { Timeout = 30000 });
     }
 
     public async Task ClickCopyToClipboardAsync()
