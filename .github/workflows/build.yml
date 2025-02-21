@@ -50,3 +50,17 @@ jobs:
         run: |
           dotnet build --configuration Release
           dotnet publish --configuration Release --output ./publish-func-app
+
+      - name: Upload build artifacts of API and Frontend
+        id: upload-artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-front-and-api
+          path: ./publish
+
+      - name: Upload build artifacts of Function App
+        id: upload-artifact-func-app
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-func-app
+          path: ./src/LockNote.FuncApp/publish-func-app
