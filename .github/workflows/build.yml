@@ -30,7 +30,9 @@ jobs:
 
       # Restore Dependencies
       - name: Restore dependencies
-        run: dotnet restore
+        run: |
+          cd ./src
+          dotnet restore
 
       # Build Application
       - name: Build application
