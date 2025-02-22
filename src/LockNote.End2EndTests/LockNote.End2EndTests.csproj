@@ -9,10 +9,6 @@
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
-    <PropertyGroup>
-        <PlaywrightPlatform>all</PlaywrightPlatform>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
@@ -53,5 +49,9 @@
         <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\8.0.13\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+    <PropertyGroup>
+        <PlaywrightPlatform>all</PlaywrightPlatform>
+    </PropertyGroup>
 
 </Project>
