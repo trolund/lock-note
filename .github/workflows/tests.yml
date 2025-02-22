@@ -47,10 +47,9 @@ jobs:
 
       - name: Run End-to-End Tests
         run: |
+          BASEURL=${{ env.BASEURL }}
           dotnet test ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj \
             --logger "trx;LogFileName=test-results.trx"
-        env:
-          BASEURL: ${{ env.BASEURL }}
 
       - name: Upload Test Results (Optional)
         uses: actions/upload-artifact@v4
