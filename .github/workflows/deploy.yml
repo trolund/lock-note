@@ -33,14 +33,19 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Download build artifacts of API and Frontend
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: build-front-and-api
+          path: ./
 
       - name: Download build artifacts of Function App
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: build-func-app
+          path: ./
+
+      - name: List all files recursively
+        run: ls -R
 
       - name: Create infrastructure
         run: |
