@@ -5,6 +5,19 @@ on:
     secrets:
       AZURE_CREDENTIALS:
         required: true
+      AZURE_RESOURCE_GROUP:
+        required: true
+      AZURE_LOCATION:
+        required: true
+      AZURE_WEBAPP_PUBLISH_PROFILE:
+        required: true
+    inputs:
+      AZURE_WEBAPP_NAME:
+        required: true
+        type: string
+      AZURE_FUNCTIONAPP_NAME:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -56,16 +69,11 @@ jobs:
           # Export the connection string as a GitHub Actions environment variable
           echo "connectionString=${connectionString}" >> $GITHUB_ENV
 
-      - name: Use the Connection String
-        run: |
-          echo "Using the connection string..."
-          echo "Connection String: ${{ env.connectionString }}"
-
       - name: Get Publish Profile
         id: get-publish-profile
         run: |
           az webapp deployment list-publishing-profiles \
-            --name ${{ env.AZURE_WEBAPP_NAME }} \
+            --name ${{ inputs.AZURE_WEBAPP_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
             --output json > publishProfile.json
 
@@ -78,7 +86,7 @@ jobs:
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
           slot-name: "production"
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./src/publish
@@ -86,5 +94,5 @@ jobs:
       - name: Deploy Function App
         uses: Azure/functions-action@v1
         with:
-          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          app-name: ${{ inputs.AZURE_FUNCTIONAPP_NAME }}
           package: "./src/LockNote.FuncApp/publish-func-app/"
