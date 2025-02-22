@@ -18,10 +18,10 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
-      AZURE_WEBAPP_NAME: "${{ vars.AZURE_WEBAPP_NAME }}-test"
-      AZURE_FUNCTIONAPP_NAME: "${{ vars.AZURE_FUNCTIONAPP_NAME }}-test"
-      COSMOS_DB_ACCOUNT_NAME: "${{ vars.COSMOS_DB_ACCOUNT_NAME }}-test"
-      FUNCTION_STORAGE_ACCOUNT_NAME: "${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}-test"
+      AZURE_WEBAPP_NAME: "${{ vars.AZURE_WEBAPP_NAME }}-t"
+      AZURE_FUNCTIONAPP_NAME: "${{ vars.AZURE_FUNCTIONAPP_NAME }}-t"
+      COSMOS_DB_ACCOUNT_NAME: "${{ vars.COSMOS_DB_ACCOUNT_NAME }}-t"
+      FUNCTION_STORAGE_ACCOUNT_NAME: "${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}-t"
 
   tests:
     needs: deploy-test
