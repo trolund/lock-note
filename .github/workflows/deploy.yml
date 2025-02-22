@@ -9,8 +9,6 @@ on:
         required: true
       AZURE_LOCATION:
         required: true
-      AZURE_WEBAPP_PUBLISH_PROFILE:
-        required: true
     inputs:
       AZURE_WEBAPP_NAME:
         required: true
@@ -81,14 +79,12 @@ jobs:
           publish_profile=$(cat publishProfile.json | jq -r '.[0].publishingProfile')
           echo "PUBLISH_PROFILE=$publish_profile" >> $GITHUB_ENV
 
-          echo ${{ env.PUBLISH_PROFILE }}
-
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
         with:
           app-name: ${{ inputs.AZURE_WEBAPP_NAME }}
           slot-name: "production"
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ env.PUBLISH_PROFILE }}
           package: ./src/publish
 
       - name: Deploy Function App
