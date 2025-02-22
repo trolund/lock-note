@@ -42,7 +42,7 @@ jobs:
       FUNCTIONAPP_PLAN_NAME: "${{ vars.FUNCTIONAPP_PLAN_NAME }}t"
 
   deploy:
-    needs: [build, tests]
+    needs: [build, tests, teardown-test-env]
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
