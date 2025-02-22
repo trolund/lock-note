@@ -28,7 +28,6 @@ jobs:
   tests:
     needs: deploy-test
     uses: ./.github/workflows/tests.yml
-    # TODO: add url to fronend for tests
 
   deploy:
     needs: [build, tests]

@@ -76,6 +76,12 @@ jobs:
           echo "FUNCTION_APP_URL=$(echo $output | jq -r '.functionAppUrl.value')" >> $GITHUB_ENV
           echo "APP_SERVICE_URL=$(echo $output | jq -r '.appServiceUrl.value')" >> $GITHUB_ENV
 
+      - name: Upload frontend url artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-url
+          path: frontend-url.txt
+
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
         with:

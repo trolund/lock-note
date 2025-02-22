@@ -27,15 +27,30 @@ jobs:
         run: |
           dotnet test ./src/LockNote.UnitTests/LockNote.UnitTests.csproj --logger "trx;LogFileName=test-results.trx"
 
+      # TODO: find a way where build is not required
       - name: Install Playwright Browsers (Using PowerShell)
         run: |
           dotnet build ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj
           cd ./src/LockNote.End2EndTests/bin/Debug/net8.0
           pwsh playwright.ps1 install chromium
 
-      - name: Run Playwright Tests
+      - name: Download Frontend URL Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-url
+
+      - name: Read Frontend URL
         run: |
-          dotnet test ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj --logger "trx;LogFileName=test-results.trx"
+          FRONTEND_URL=$(cat frontend-url.txt)
+          echo "Frontend URL is $FRONTEND_URL"
+          echo "BASEURL=$FRONTEND_URL" >> $GITHUB_ENV  # Set the BASEURL environment variable
+
+      - name: Run End-to-End Tests
+        run: |
+          dotnet test ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj \
+            --logger "trx;LogFileName=test-results.trx"
+        env:
+          BASEURL: ${{ env.BASEURL }}
 
       - name: Upload Test Results (Optional)
         uses: actions/upload-artifact@v4
