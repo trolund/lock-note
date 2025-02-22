@@ -41,7 +41,7 @@ jobs:
       # Publish Backend and Frontend Together
       - name: Publish API and Frontend
         working-directory: ./src
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish -c Release -r linux-x64 --self-contained true -o ./publish
 
       # Build and Publish Function App
       # TODO: remove build
