@@ -9,13 +9,6 @@ public class TestSetup
     [OneTimeSetUp]
     public void GlobalSetup()
     {
-        var exitCode = Microsoft.Playwright.Program.Main(["install"]);
-        
-        if(exitCode != 0)
-        {
-            throw new Exception("Failed to install Playwright");
-        }
-        
         var services = new ServiceCollection();
 
         // Register additional services
