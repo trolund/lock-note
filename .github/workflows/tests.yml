@@ -39,15 +39,16 @@ jobs:
         with:
           name: frontend-url
 
-      - name: Read Frontend URL
+      - name: Read Frontend URL and modify appsettings.json
         run: |
           FRONTEND_URL=$(cat frontend-url.txt)
           echo "Frontend URL is $FRONTEND_URL"
           echo "BASEURL=$FRONTEND_URL" >> $GITHUB_ENV  # Set the BASEURL environment variable
+          jq '.BASEURL = "$FRONTEND_URL"' ./src/LockNote.End2EndTests/appsettings.json > ./src/LockNote.End2EndTests/appsettings.temp.json
+          mv ./src/LockNote.End2EndTests/appsettings.temp.json ./src/LockNote.End2EndTests/appsettings.json
 
       - name: Run End-to-End Tests
         run: |
-          BASEURL=${{ env.BASEURL }}
           dotnet test ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj \
             --logger "trx;LogFileName=test-results.trx"
 
