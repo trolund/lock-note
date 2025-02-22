@@ -25,15 +25,15 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          dotnet test ./src/LockNote.Tests/LockNote.Tests.csproj --logger "trx;LogFileName=test-results.trx"
+          dotnet test ./src/LockNote.UnitTests/LockNote.UnitTests.csproj --logger "trx;LogFileName=test-results.trx"
 
       - name: Install Playwright Browsers (Using PowerShell)
-        run: pwsh bin/Release/net8.0/playwright.ps1 install
-        working-directory: ./src/LockNote.End2EndTests
+        run: pwsh playwright.ps1 install
+        working-directory: ./build-front-and-api
 
       - name: Run Playwright Tests
-        working-directory: ./src
-        run: dotnet test --logger "trx;LogFileName=test-results.trx"
+        run: |
+          dotnet test ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload Test Results (Optional)
         uses: actions/upload-artifact@v4
