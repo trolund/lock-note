@@ -1,4 +1,4 @@
-name: Tests
+name: Run Unit and End-to-End Tests
 
 on:
   workflow_call:
@@ -23,11 +23,9 @@ jobs:
           name: build-func-app
           path: ./build-func-app
 
-      - name: Debug directory structure
-        run: ls -R
-
-      - name: Run Application
-        run: dotnet run --project src/LockNote.Api/LockNote.Api.csproj
+      - name: Run Unit Tests
+        run: |
+          dotnet test ./src/LockNote.Tests/LockNote.Tests.csproj --logger "trx;LogFileName=test-results.trx"
 
       - name: Install Playwright Browsers (Using PowerShell)
         run: pwsh bin/Release/net8.0/playwright.ps1 install

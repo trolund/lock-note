@@ -1,4 +1,4 @@
-name: build
+name: Build and Publish Lock-note
 
 on:
   workflow_call:
