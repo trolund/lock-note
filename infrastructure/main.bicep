@@ -5,6 +5,10 @@ param containerName string
 param functionStorageAccountName string
 param functionAppName string
 
+param appServicePlanName string
+param appServiceName string
+param funcServicePlanName string
+
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
   name: cosmosDbAccountName
   location: location
@@ -24,7 +28,7 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'LockNoteAppServicePlan'
+  name: appServicePlanName
   location: location
   sku: {
     name: 'F1'
@@ -33,7 +37,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 }
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'LockNoteApp'
+  name: appServiceName
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -51,7 +55,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 resource funcServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'LockNoteFuncAppPlan'
+  name: funcServicePlanName
   location: location
   kind: 'functionapp'
   sku: {
