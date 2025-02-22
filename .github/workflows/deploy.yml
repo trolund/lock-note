@@ -36,13 +36,13 @@ jobs:
         uses: actions/download-artifact@v4.1.8
         with:
           name: build-front-and-api
-          path: ./
+          path: ./build-front-and-api
 
       - name: Download build artifacts of Function App
         uses: actions/download-artifact@v4.1.8
         with:
           name: build-func-app
-          path: ./
+          path: ./build-func-app
 
       - name: List all files recursively
         run: ls -R
