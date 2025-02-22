@@ -28,7 +28,9 @@ jobs:
           dotnet test ./src/LockNote.UnitTests/LockNote.UnitTests.csproj --logger "trx;LogFileName=test-results.trx"
 
       - name: Install Playwright Browsers (Using PowerShell)
-        run: pwsh playwright.ps1 install
+        run: |
+          pwsh playwright.ps1 install-deps chromium
+          pwsh playwright.ps1 install chromium
         working-directory: ./build-front-and-api
 
       - name: Run Playwright Tests
