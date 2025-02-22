@@ -8,8 +8,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Download build artifacts of API and Frontend
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-front-and-api
+          path: ./build-front-and-api
+
+      - name: Download build artifacts of Function App
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build-func-app
+          path: ./build-func-app
+
       - name: Debug directory structure
         run: ls -R
+
+      - name: Run Application
+        run: dotnet run --project src/LockNote.Api/LockNote.Api.csproj
 
       - name: Install Playwright Browsers (Using PowerShell)
         run: pwsh bin/Release/net8.0/playwright.ps1 install
