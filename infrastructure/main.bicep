@@ -1,11 +1,9 @@
 param location string = resourceGroup().location
-
-param cosmosDbAccountName string = 'locknotecosmosdb'
-param databaseName string = 'LockNote'
-param containerName string = 'Notes'
-
-param functionStorageAccountName string = 'locknotefuncappstorage'
-param functionAppName string = 'LockNoteFuncApp'
+param cosmosDbAccountName string
+param databaseName string
+param containerName string
+param functionStorageAccountName string
+param functionAppName string
 
 resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
   name: cosmosDbAccountName
@@ -103,3 +101,4 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 output functionAppUrl string = functionApp.properties.defaultHostName
+output appServiceUrl string = appService.properties.defaultHostName

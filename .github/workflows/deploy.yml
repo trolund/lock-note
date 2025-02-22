@@ -18,6 +18,12 @@ on:
       AZURE_FUNCTIONAPP_NAME:
         required: true
         type: string
+      COSMOS_DB_ACCOUNT_NAME:
+        required: true
+        type: string
+      FUNCTION_STORAGE_ACCOUNT_NAME:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -48,16 +54,18 @@ jobs:
         run: |
           az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
 
-          deploymentOutputs=$(az deployment group create \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --template-file infrastructure/main.bicep \
-            --query "properties.outputs" -o json)
-
-          # Extract the connection string from the outputs
-          connectionString=$(echo $deploymentOutputs | jq -r '.connectionString.value')
-
-          # Export the connection string as a GitHub Actions environment variable
-          echo "connectionString=${connectionString}" >> $GITHUB_ENV
+          output=$(az deployment group create \
+                      --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+                      --template-file infrastructure/main.bicep \
+                      --parameters cosmosDbAccountName=${{ inputs.COSMOS_DB_ACCOUNT_NAME }} \
+                                  functionStorageAccountName=${{ inputs.FUNCTION_STORAGE_ACCOUNT_NAME }} \
+                                  functionAppName=${{ inputs.AZURE_FUNCTIONAPP_NAME }} \
+                                  databaseName=${{ secrets.COSMOS_DB_NAME }} \
+                                  containerName=${{ secrets.COSMOS_DB_CONTAINER_NAME }} \
+                      --query "properties.outputs" -o json)
+                    
+          echo "FUNCTION_APP_URL=$(echo $output | jq -r '.functionAppUrl.value')" >> $GITHUB_ENV
+          echo "APP_SERVICE_URL=$(echo $output | jq -r '.appServiceUrl.value')" >> $GITHUB_ENV
 
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
