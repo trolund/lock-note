@@ -39,12 +39,10 @@ jobs:
 
       - name: Remove Azure Resources
         run: |
-          // function app
           az appservice plan delete --name ${{ inputs.FUNCTIONAPP_PLAN_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
           az functionapp delete --name ${{ inputs.AZURE_FUNCTIONAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
           az storage account delete --name ${{ inputs.FUNCTION_STORAGE_ACCOUNT_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
 
-          // web app
           az cosmosdb delete --name ${{ inputs.COSMOS_DB_ACCOUNT_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
           az appservice plan delete --name ${{ inputs.APPSERVICE_PLAN_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
           az webapp delete --name ${{ inputs.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
