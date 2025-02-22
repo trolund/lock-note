@@ -22,20 +22,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print part of secret
-        run: |
-          echo "Secret first 5 characters: ${SECRET:0:5}"
-        env:
-          SECRET: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Check if secret is available
-        run: |
-          if [ -z "${{ secrets.AZURE_CREDENTIALS }}" ]; then
-            echo "Secret is empty!"
-            exit 1
-          else
-            echo "Secret is available"
-          fi
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
       - name: Login to Azure
         uses: Azure/login@v2.2.0
