@@ -29,8 +29,9 @@ jobs:
 
       - name: Install Playwright Browsers (Using PowerShell)
         run: |
+          dotnet build ./src/LockNote.End2EndTests/LockNote.End2EndTests.csproj
+          cd ./bin/Debug/net8.0
           pwsh playwright.ps1 install chromium
-        working-directory: ./build-front-and-api
 
       - name: Run Playwright Tests
         run: |
