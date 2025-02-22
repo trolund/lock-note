@@ -67,7 +67,7 @@ jobs:
                                   functionStorageAccountName=${{ inputs.FUNCTION_STORAGE_ACCOUNT_NAME }} \
                                   functionAppName=${{ inputs.AZURE_FUNCTIONAPP_NAME }} \
                                   databaseName=${{ secrets.COSMOS_DB_NAME }} \
-                                  containerName=${{ secrets.COSMOS_DB_CONTAINER_NAME }} \
+                                  containerName=${{ secrets.COSMOS_CON_NAME }} \
                                   appServicePlanName=${{ inputs.APPSERVICE_PLAN_NAME }} \
                                   appServiceName=${{ inputs.AZURE_WEBAPP_NAME }} \
                                   funcServicePlanName=${{ inputs.FUNCTIONAPP_PLAN_NAME }} \

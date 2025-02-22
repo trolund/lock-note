@@ -47,7 +47,7 @@ jobs:
 
       - name: Modify appsettings.json
         run: |
-          jq '.BASEURL = "${{ env.BASEURL }}"' ./src/LockNote.End2EndTests/appsettings.json > ./src/LockNote.End2EndTests/appsettings.temp.json
+          jq '.BASEURL = "https://${{ env.BASEURL }}"' ./src/LockNote.End2EndTests/appsettings.json > ./src/LockNote.End2EndTests/appsettings.temp.json
           mv ./src/LockNote.End2EndTests/appsettings.temp.json ./src/LockNote.End2EndTests/appsettings.json
 
       - name: Run End-to-End Tests
