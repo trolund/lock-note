@@ -44,9 +44,6 @@ jobs:
           name: build-func-app
           path: ./build-func-app
 
-      - name: List all files recursively
-        run: ls -R
-
       - name: Create infrastructure
         run: |
           az group create --name ${{ secrets.AZURE_RESOURCE_GROUP }} --location ${{ secrets.AZURE_LOCATION }}
@@ -61,18 +58,6 @@ jobs:
 
           # Export the connection string as a GitHub Actions environment variable
           echo "connectionString=${connectionString}" >> $GITHUB_ENV
-
-      - name: Get Publish Profile
-        id: get-publish-profile
-        run: |
-          az webapp deployment list-publishing-profiles \
-            --name ${{ inputs.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --output json > publishProfile.json
-
-          # Extract the profile content and encode it for safe handling
-          publish_profile=$(cat publishProfile.json | jq -r '.[0].publishingProfile')
-          echo "PUBLISH_PROFILE=$publish_profile" >> $GITHUB_ENV
 
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2
