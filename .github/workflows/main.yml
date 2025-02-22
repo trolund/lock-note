@@ -29,6 +29,18 @@ jobs:
     needs: deploy-test
     uses: ./.github/workflows/tests.yml
 
+  teardown-test-env:
+    needs: tests
+    uses: ./.github/workflows/teardown.yml
+    secrets: inherit
+    with:
+      AZURE_WEBAPP_NAME: "${{ vars.AZURE_WEBAPP_NAME }}t"
+      AZURE_FUNCTIONAPP_NAME: "${{ vars.AZURE_FUNCTIONAPP_NAME }}t"
+      COSMOS_DB_ACCOUNT_NAME: "${{ vars.COSMOS_DB_ACCOUNT_NAME }}t"
+      FUNCTION_STORAGE_ACCOUNT_NAME: "${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}t"
+      APPSERVICE_PLAN_NAME: "${{ vars.APPSERVICE_PLAN_NAME }}t"
+      FUNCTIONAPP_PLAN_NAME: "${{ vars.FUNCTIONAPP_PLAN_NAME }}t"
+
   deploy:
     needs: [build, tests]
     uses: ./.github/workflows/deploy.yml
