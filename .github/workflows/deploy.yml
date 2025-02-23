@@ -30,7 +30,9 @@ on:
       FUNCTIONAPP_PLAN_NAME:
         required: true
         type: string
-
+      ENV:
+        required: true
+        type: string
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -80,8 +82,8 @@ jobs:
       - name: Upload frontend url artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-url
-          path: frontend-url.txt
+          name: frontend-url-${{ inputs.ENV }}
+          path: frontend-url-${{ inputs.ENV }}.txt
 
       - name: Deploy to Azure Web App (API and Frontend)
         uses: Azure/webapps-deploy@v2

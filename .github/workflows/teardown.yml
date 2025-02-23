@@ -28,7 +28,7 @@ on:
         type: string
 
 jobs:
-  build:
+  teardown:
     runs-on: ubuntu-latest
 
     steps:

@@ -2,6 +2,10 @@ name: Run Unit and End-to-End Tests
 
 on:
   workflow_call:
+    inputs:
+      ENV:
+        required: true
+        type: string
 
 jobs:
   tests:
@@ -37,11 +41,11 @@ jobs:
       - name: Download Frontend URL Artifact
         uses: actions/download-artifact@v4.1.8
         with:
-          name: frontend-url
+          name: frontend-url-${{ inputs.ENV }}
 
       - name: Read Frontend URL
         run: |
-          FRONTEND_URL=$(cat frontend-url.txt)
+          FRONTEND_URL=$(cat frontend-url-${{ inputs.ENV }}.txt)
           echo "Frontend URL is $FRONTEND_URL"
           echo "BASEURL=$FRONTEND_URL" >> $GITHUB_ENV  # Set the BASEURL environment variable
 

@@ -24,10 +24,13 @@ jobs:
       FUNCTION_STORAGE_ACCOUNT_NAME: "${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}t"
       APPSERVICE_PLAN_NAME: "${{ vars.APPSERVICE_PLAN_NAME }}t"
       FUNCTIONAPP_PLAN_NAME: "${{ vars.FUNCTIONAPP_PLAN_NAME }}t"
+      ENV: "test"
 
   tests:
     needs: deploy-test
     uses: ./.github/workflows/tests.yml
+    with:
+      ENV: "test"
 
   teardown-test-env:
     needs: tests
@@ -52,3 +55,4 @@ jobs:
       FUNCTION_STORAGE_ACCOUNT_NAME: ${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}
       APPSERVICE_PLAN_NAME: ${{ vars.APPSERVICE_PLAN_NAME }}
       FUNCTIONAPP_PLAN_NAME: ${{ vars.FUNCTIONAPP_PLAN_NAME }}
+      ENV: "prod"

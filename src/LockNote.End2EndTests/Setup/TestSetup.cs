@@ -10,12 +10,6 @@ public class TestSetup
     [OneTimeSetUp]
     public void GlobalSetup()
     {
-        var exitCode = Program.Main(new[] { "install" });
-        if (exitCode != 0)
-        {
-            throw new InvalidOperationException($"Playwright exited with code {exitCode}");
-        }
-        
         var services = new ServiceCollection();
 
         // Register additional services
