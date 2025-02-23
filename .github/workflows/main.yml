@@ -4,9 +4,6 @@ on:
   pull_request: # Trigger the workflow on pull requests
     branches:
       - main
-  push: # Trigger the workflow on push to main
-    branches:
-      - pipeline-refactor
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
