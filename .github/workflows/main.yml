@@ -10,6 +10,18 @@ on:
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
+  teardown-prod-env:
+    needs: tests
+    uses: ./.github/workflows/teardown.yml
+    secrets: inherit
+    with:
+      AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}
+      AZURE_FUNCTIONAPP_NAME: ${{ vars.AZURE_FUNCTIONAPP_NAME }}
+      COSMOS_DB_ACCOUNT_NAME: ${{ vars.COSMOS_DB_ACCOUNT_NAME }}
+      FUNCTION_STORAGE_ACCOUNT_NAME: ${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}
+      APPSERVICE_PLAN_NAME: ${{ vars.APPSERVICE_PLAN_NAME }}
+      FUNCTIONAPP_PLAN_NAME: ${{ vars.FUNCTIONAPP_PLAN_NAME }}
+
   build:
     uses: ./.github/workflows/build.yml
 
