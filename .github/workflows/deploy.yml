@@ -77,7 +77,7 @@ jobs:
                     
           echo "FUNCTION_APP_URL=$(echo $output | jq -r '.functionAppUrl.value')" >> $GITHUB_ENV
           echo "APP_SERVICE_URL=$(echo $output | jq -r '.appServiceUrl.value')" >> $GITHUB_ENV
-          echo "$(echo $output | jq -r '.appServiceUrl.value')" > frontend-url.txt
+          echo "$(echo $output | jq -r '.appServiceUrl.value')" > frontend-url${{ inputs.ENV }}.txt
 
       - name: Upload frontend url artifact
         uses: actions/upload-artifact@v4
