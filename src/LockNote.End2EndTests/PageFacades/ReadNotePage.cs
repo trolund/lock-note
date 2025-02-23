@@ -11,7 +11,6 @@ public class ReadNotePage(IPage page) : PlaywrightFacade(page, "/")
     
     public async Task<string> GetMessageAsync()
     {
-        await _page.PauseAsync();
         var selector = _page.GetByTestId("message-read");
         return await selector.InputValueAsync();
     }

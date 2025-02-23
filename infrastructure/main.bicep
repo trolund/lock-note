@@ -1,20 +1,34 @@
 param location string = resourceGroup().location
-param cosmosDbAccountName string = 'locknotecosmosdb'
-param functionStorageAccountName string = 'locknotefuncappstorage'
-param databaseName string = 'LockNote'
-param containerName string = 'Notes'
+param cosmosDbAccountName string
+param databaseName string
+param containerName string
+param functionStorageAccountName string
+param functionAppName string
 
-// Reference the Cosmos DB module
-module cosmosDbModule './cosmos-db.bicep' = {
-  name: 'LockNoteCosmosDb'
-  params: {
-    cosmosDbAccountName: cosmosDbAccountName
-    location: location
+param appServicePlanName string
+param appServiceName string
+param funcServicePlanName string
+
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-08-15' = {
+  name: cosmosDbAccountName
+  location: location
+  kind: 'GlobalDocumentDB'
+  properties: {
+    enableFreeTier: true
+    databaseAccountOfferType: 'Standard'
+    locations: [
+      {
+        locationName: location
+      }
+    ]
+    consistencyPolicy: {
+      defaultConsistencyLevel: 'Session'
+    }
   }
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'LockNoteAppServicePlan'
+  name: appServicePlanName
   location: location
   sku: {
     name: 'F1'
@@ -23,7 +37,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 }
 
 resource appService 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'LockNoteApp'
+  name: appServiceName
   location: location
   properties: {
     serverFarmId: appServicePlan.id
@@ -31,7 +45,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       appSettings: [
         {
           name: 'COSMOS_DB_CONNECTION_STRING'
-          value: cosmosDbModule.outputs.cosmosDbConnectionString
+          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
         { name: 'COSMOS_DB_NAME', value: databaseName }
         { name: 'COSMOS_CON_NAME', value: containerName }
@@ -41,7 +55,7 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 resource funcServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'LockNoteFuncAppPlan'
+  name: funcServicePlanName
   location: location
   kind: 'functionapp'
   sku: {
@@ -60,7 +74,7 @@ resource funcStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 }
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'LockNoteFuncApp'
+  name: functionAppName
   location: location
   kind: 'functionapp'
   properties: {
@@ -81,7 +95,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'COSMOS_DB_CONNECTION_STRING'
-          value: cosmosDbModule.outputs.cosmosDbConnectionString
+          value: cosmosDbAccount.listConnectionStrings().connectionStrings[0].connectionString
         }
         { name: 'COSMOS_DB_NAME', value: databaseName }
         { name: 'COSMOS_CON_NAME', value: containerName }
@@ -91,4 +105,4 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 output functionAppUrl string = functionApp.properties.defaultHostName
-output connectionString string = cosmosDbModule.outputs.cosmosDbConnectionString
+output appServiceUrl string = appService.properties.defaultHostName

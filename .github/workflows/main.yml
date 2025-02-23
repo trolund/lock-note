@@ -1,0 +1,69 @@
+name: Deploy Lock-note to Azure
+
+on:
+  pull_request: # Trigger the workflow on pull requests
+    branches:
+      - main
+  push: # Trigger the workflow on push to main
+    branches:
+      - pipeline-refactor
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  teardown-prod-env:
+    uses: ./.github/workflows/teardown.yml
+    secrets: inherit
+    with:
+      AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}
+      AZURE_FUNCTIONAPP_NAME: ${{ vars.AZURE_FUNCTIONAPP_NAME }}
+      COSMOS_DB_ACCOUNT_NAME: ${{ vars.COSMOS_DB_ACCOUNT_NAME }}
+      FUNCTION_STORAGE_ACCOUNT_NAME: ${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}
+      APPSERVICE_PLAN_NAME: ${{ vars.APPSERVICE_PLAN_NAME }}
+      FUNCTIONAPP_PLAN_NAME: ${{ vars.FUNCTIONAPP_PLAN_NAME }}
+
+  build:
+    uses: ./.github/workflows/build.yml
+
+  deploy-test:
+    needs: [build, teardown-prod-env]
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      AZURE_WEBAPP_NAME: "${{ vars.AZURE_WEBAPP_NAME }}t"
+      AZURE_FUNCTIONAPP_NAME: "${{ vars.AZURE_FUNCTIONAPP_NAME }}t"
+      COSMOS_DB_ACCOUNT_NAME: "${{ vars.COSMOS_DB_ACCOUNT_NAME }}t"
+      FUNCTION_STORAGE_ACCOUNT_NAME: "${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}t"
+      APPSERVICE_PLAN_NAME: "${{ vars.APPSERVICE_PLAN_NAME }}t"
+      FUNCTIONAPP_PLAN_NAME: "${{ vars.FUNCTIONAPP_PLAN_NAME }}t"
+      ENV: "test"
+
+  tests:
+    needs: deploy-test
+    uses: ./.github/workflows/tests.yml
+    with:
+      ENV: "test"
+
+  teardown-test-env:
+    needs: tests
+    uses: ./.github/workflows/teardown.yml
+    secrets: inherit
+    with:
+      AZURE_WEBAPP_NAME: "${{ vars.AZURE_WEBAPP_NAME }}t"
+      AZURE_FUNCTIONAPP_NAME: "${{ vars.AZURE_FUNCTIONAPP_NAME }}t"
+      COSMOS_DB_ACCOUNT_NAME: "${{ vars.COSMOS_DB_ACCOUNT_NAME }}t"
+      FUNCTION_STORAGE_ACCOUNT_NAME: "${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}t"
+      APPSERVICE_PLAN_NAME: "${{ vars.APPSERVICE_PLAN_NAME }}t"
+      FUNCTIONAPP_PLAN_NAME: "${{ vars.FUNCTIONAPP_PLAN_NAME }}t"
+
+  deploy:
+    needs: [build, tests, teardown-test-env]
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      AZURE_WEBAPP_NAME: ${{ vars.AZURE_WEBAPP_NAME }}
+      AZURE_FUNCTIONAPP_NAME: ${{ vars.AZURE_FUNCTIONAPP_NAME }}
+      COSMOS_DB_ACCOUNT_NAME: ${{ vars.COSMOS_DB_ACCOUNT_NAME }}
+      FUNCTION_STORAGE_ACCOUNT_NAME: ${{ vars.FUNCTION_STORAGE_ACCOUNT_NAME }}
+      APPSERVICE_PLAN_NAME: ${{ vars.APPSERVICE_PLAN_NAME }}
+      FUNCTIONAPP_PLAN_NAME: ${{ vars.FUNCTIONAPP_PLAN_NAME }}
+      ENV: "prod"

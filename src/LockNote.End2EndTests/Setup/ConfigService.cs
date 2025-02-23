@@ -23,9 +23,7 @@ public class ConfigService : IConfigService
             .Build();
 
         // Read configuration values
-        var frontendBaseUrl = config["FRONTEND:baseUrl"];
-        var frontendPort = config["FRONTEND:port"];
-        _baseUrl = $"{frontendBaseUrl}:{frontendPort}";
+        _baseUrl = config["BASEURL"];
     }
     
     public string GetBaseUrl()

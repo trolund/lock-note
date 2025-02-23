@@ -50,4 +50,8 @@
       </Reference>
     </ItemGroup>
 
+    <PropertyGroup>
+        <PlaywrightPlatform>all</PlaywrightPlatform>
+    </PropertyGroup>
+
 </Project>

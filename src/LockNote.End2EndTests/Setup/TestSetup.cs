@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Playwright;
 
 namespace LockNote.End2EndTests.Setup;
 
