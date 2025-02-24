@@ -13,6 +13,12 @@ namespace LockNote.Controllers
         public async Task<ActionResult> CreateNote(NoteDto noteDto)
         {
             var note = await notesService.CreateNoteAsync(noteDto);
+
+            if (note is null)
+            {
+                return NotFound($"Note with id: {noteDto.Id} could not be found");
+            }
+            
             return Ok(note);
         }
         

@@ -1,5 +1,4 @@
-using LockNote.Data;
-using Microsoft.Extensions.Options;
+using LockNote.Data.Base;
 
 namespace LockNote;
 

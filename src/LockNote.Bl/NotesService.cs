@@ -1,14 +1,35 @@
-using LockNote.Data;
 using LockNote.Data.Model;
+using LockNote.Data.Repositories;
 using LockNote.Infrastructure.Dtos;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 
 namespace LockNote.Bl;
 
-public class NotesService(IRepository<Note> notesRepository, ILogger<NotesService> logger)
+public class NotesService(NoteRepository notesRepository, ILogger<NotesService> logger)
 {
-    public async Task<NoteDto> CreateNoteAsync(NoteDto note)
+    public async Task<NoteDto> UpdateNoteAsync(NoteDto note)
+    {
+        if (note.Id is null)
+        {
+            throw new ArgumentException("Note id is required");
+        }
+        
+        var noteModel = await notesRepository.GetNoteAsync(note.Id);
+        
+        noteModel.Content = note.Content;
+        // TODO: fix?
+        noteModel.ReadBeforeDelete = (note.ReadBeforeDelete ?? 1) - 1;
+
+        if (noteModel.ReadBeforeDelete == 0)
+        {
+            await DeleteNoteAsync(note.Id);
+        }
+        
+        var updatedNote = await notesRepository.UpdateNoteAsync(noteModel);
+        return NoteDto.FromModel(updatedNote);
+    }
+    
+    public async Task<NoteDto?> CreateNoteAsync(NoteDto note)
     {
         var noteModel = new Note
         {
@@ -19,7 +40,7 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
 
         if (note.Password is null)
         {
-            return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
+            return NoteDto.FromModel(await notesRepository.CreateNoteAsync(noteModel));
         }
 
         var (salt, hashed) = PasswordHashService.HashPassword(note.Password);
@@ -27,12 +48,12 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
         noteModel.PasswordHash = hashed;
         noteModel.Salt = salt;
         noteModel.Content = Encryption.Encrypt(note.Content, note.Password);
-        return NoteDto.FromModel(await notesRepository.AddAsync(noteModel));
+        return NoteDto.FromModel(await notesRepository.CreateNoteAsync(noteModel));
     }
 
     public async Task<Note?> GetNoteAsync(string id, string password = "")
     {
-        var entity = await notesRepository.GetByIdAsync(id, "Note");
+        var entity = await notesRepository.GetNoteAsync(id);
 
         // if a password is set but not correct, return null
         if (entity?.PasswordHash != null &&
@@ -56,22 +77,17 @@ public class NotesService(IRepository<Note> notesRepository, ILogger<NotesServic
 
     public async Task<IEnumerable<Note>> GetAllNotesAsync()
     {
-        return await notesRepository.GetAllAsync(new QueryDefinition("SELECT * FROM c"));
+        return await notesRepository.GetAllNotesAsync();
+    }
+    
+    public async Task DeleteNoteAsync(string id)
+    {
+        await notesRepository.DeleteNoteAsync(id);
     }
 
     public async Task DeleteAllOverMonthOld()
     {
-        // all notes where CreatedAt is more then a month ago
-        var query = new QueryDefinition(
-            $"SELECT * FROM c WHERE c.CreatedAt < '{DateTime.UtcNow.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm:ss.ffffffZ")}'");
-
-        var items = (await notesRepository.GetAllAsync(query)).ToList();
-
-        foreach (var item in items)
-        {
-            await notesRepository.DeleteAsync(item.Id, "Note");
-        }
-
-        logger.LogInformation("Deleted {Count} notes", items.Count);
+        var items = await notesRepository.DeleteAllOverMonthOld();
+        logger.LogInformation("Deleted {Count} notes", items.Count());
     }
 }

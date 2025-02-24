@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using LockNote.Data.Model;
 
 namespace LockNote.Infrastructure.Dtos;
@@ -5,7 +6,11 @@ namespace LockNote.Infrastructure.Dtos;
 public class NoteDto
 {
     public string? Id { get; init; }
+    
+    [Range(1, int.MaxValue, ErrorMessage = "Read before delete must be bigger than {1}")]
     public int? ReadBeforeDelete { get; init; }
+    
+    [MaxLength(10000, ErrorMessage = "Message should not be longer the {10000} chars")]
     public required string Content { get; init; }
     public DateTime? CreatedAt { get; init; }
     public string? Password { get; set; }
