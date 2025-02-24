@@ -54,7 +54,7 @@ export default function NoteForm({ mutate }: NoteFormProps) {
         <textarea
           data-testid="message"
           id="message"
-          className="outline:ring-purple-700 block h-32 min-h-12 w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
+          className="outline:ring-purple-700 block h-32 min-h-11 w-full rounded-lg border border-slate-700 bg-slate-950 bg-opacity-25 bg-gradient-to-tr from-purple-950/25 via-pink-950/10 to-red-950/10 p-2.5 text-sm text-white placeholder-gray-200 focus:border-purple-700 focus:ring-purple-700"
           placeholder="Your message..."
           {...register("message", {
             required: "The message field is required",
