@@ -12,7 +12,7 @@ export const ReadNote = () => {
     return <Navigate to="/not-found" replace />;
   }
 
-  const { data, refetch } = useGetNoteById(noteId, password);
+  const { data, refetch, isLoading } = useGetNoteById(noteId, password);
 
   useEffect(() => {
     refetch();
@@ -47,15 +47,19 @@ export const ReadNote = () => {
   return (
     <div>
       <h1>{noteId}</h1>
-      <textarea
-        data-testid="message-read"
-        id="message"
-        title="note content"
-        className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 bg-opacity-25 bg-gradient-to-tr from-purple-950/25 via-pink-950/10 to-red-950/10 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
-        readOnly
-        disabled
-        value={data?.content ?? "Note does not exist"}
-      />
+      {isLoading ? (
+        <span>Loading....</span>
+      ) : (
+        <textarea
+          data-testid="message-read"
+          id="message"
+          title="note content"
+          className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 bg-opacity-25 bg-gradient-to-tr from-purple-950/25 via-pink-950/10 to-red-950/10 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
+          readOnly
+          disabled
+          value={data?.content ?? "Note does not exist"}
+        />
+      )}
     </div>
   );
 };
