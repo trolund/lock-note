@@ -14,6 +14,12 @@ public abstract class PlaywrightFacade(IPage page): IPlaywrightFacade
         _url = url;
         _configService = new ConfigService();
     }
+    
+    public async Task<PlaywrightFacade> GoToUrlAsync(string url)
+    {
+        await page.GotoAsync($"{_configService.GetBaseUrl()}{url}");
+        return this;
+    }
 
     public async Task<PlaywrightFacade> GoToPageAsync()
     {

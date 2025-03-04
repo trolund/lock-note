@@ -25,7 +25,7 @@ export const Header = () => {
               d="M70 90 V60 A30 30 0 0 1 130 60 V90"
               fill="none"
               stroke="#2a9df4"
-              stroke-width="8"
+              strokeWidth="8"
             />
 
             <rect
@@ -37,7 +37,7 @@ export const Header = () => {
               ry="5"
               fill="#fff"
               stroke="#333"
-              stroke-width="2"
+              strokeWidth="2"
             />
             <line
               x1="90"
@@ -45,7 +45,7 @@ export const Header = () => {
               x2="130"
               y2="120"
               stroke="#333"
-              stroke-width="2"
+              strokeWidth="2"
             />
             <line
               x1="90"
@@ -53,7 +53,7 @@ export const Header = () => {
               x2="130"
               y2="130"
               stroke="#333"
-              stroke-width="2"
+              strokeWidth="2"
             />
             <line
               x1="90"
@@ -61,7 +61,7 @@ export const Header = () => {
               x2="120"
               y2="140"
               stroke="#333"
-              stroke-width="2"
+              strokeWidth="2"
             />
           </svg>
 

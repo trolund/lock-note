@@ -65,9 +65,8 @@ export default function NoteForm({ mutate }: NoteFormProps) {
             minLength: { value: 1, message: "Min length is 1 character" },
           })}
           onChange={(e) => setMessage(e.target.value)}
-        >
-          {message}
-        </textarea>
+          value={message}
+        />
         <p className="text-red-500" data-testid="message-error">
           {errors.message && errors.message.message}
         </p>
@@ -94,6 +93,7 @@ export default function NoteForm({ mutate }: NoteFormProps) {
                 Number of views
               </label>
               <select
+                data-testid="num-of-reads"
                 title="number of reads"
                 className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                 {...register("numOfViews", {

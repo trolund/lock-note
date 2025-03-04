@@ -29,6 +29,7 @@ namespace LockNote.Controllers
             return Ok(notes);
         }
         
+        // TODO: do not sent password in url
         [HttpGet("{id}")]
         public async Task<ActionResult> GetNote(string id, [FromQuery] string password = "")
         {

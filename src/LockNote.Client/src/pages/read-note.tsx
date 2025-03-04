@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useGetNoteById } from "../api/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const ReadNote = () => {
   const { noteId } = useParams();
@@ -9,10 +9,18 @@ export const ReadNote = () => {
   const [password, setPassword] = useState<string | null>(null);
 
   if (!noteId) {
-    return <h1>Invalid noteId</h1>;
+    return <Navigate to="/not-found" replace />;
   }
 
-  const { data, isLoading, refetch } = useGetNoteById(noteId, password);
+  const { data, refetch } = useGetNoteById(noteId, password);
+
+  useEffect(() => {
+    refetch();
+  }, [noteId]);
+
+  // if (!data?.content) {
+  //   return <Navigate to="/not-found" replace />;
+  // }
 
   if (data?.id === "passwordIncorrect") {
     return (
@@ -43,22 +51,15 @@ export const ReadNote = () => {
   return (
     <div>
       <h1>{noteId}</h1>
-      {isLoading ? (
-        <p>Loading note...</p>
-      ) : (
-        <p>
-          <textarea
-            data-testid="message-read"
-            id="message"
-            title="note content"
-            className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
-            readOnly
-            disabled
-          >
-            {data?.content}
-          </textarea>
-        </p>
-      )}
+      <textarea
+        data-testid="message-read"
+        id="message"
+        title="note content"
+        className="outline:ring-purple-700 block w-full rounded-lg border border-slate-700 bg-slate-950 bg-opacity-25 bg-gradient-to-tr from-purple-950/25 via-pink-950/10 to-red-950/10 p-2.5 text-sm text-white placeholder-gray-400 focus:border-purple-700 focus:ring-purple-700"
+        readOnly
+        disabled
+        value={data?.content ?? "Note does not exist"}
+      />
     </div>
   );
 };

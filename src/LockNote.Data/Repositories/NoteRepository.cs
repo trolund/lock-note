@@ -1,5 +1,4 @@
 using LockNote.Data.Base;
-using LockNote.Data.Exceptions;
 using LockNote.Data.Model;
 using Microsoft.Azure.Cosmos;
 
@@ -9,12 +8,7 @@ public class NoteRepository(IRepository<Note> notesRepository)
 {
     public async Task<Note> UpdateNoteAsync(Note note)
     {
-        var noteModel = await notesRepository.GetByIdAsync(note.Id);
-
-        noteModel.Content = note.Content;
-        noteModel.ReadBeforeDelete = note.ReadBeforeDelete - 1;
-
-        return await notesRepository.UpdateAsync(note.Id, noteModel);
+        return await notesRepository.UpdateAsync(note.Id, note);
     }
 
     public async Task<Note> CreateNoteAsync(Note note)
@@ -24,14 +18,7 @@ public class NoteRepository(IRepository<Note> notesRepository)
 
     public async Task<Note> GetNoteAsync(string id)
     {
-        var dao = await notesRepository.GetByIdAsync(id);
-
-        if (dao is null)
-        {
-            throw new DalException("Note not found");
-        }
-
-        return dao;
+        return await notesRepository.GetByIdAsync(id);
     }
 
     public async Task<IEnumerable<Note>> GetAllNotesAsync()

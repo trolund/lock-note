@@ -1,22 +1,21 @@
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { NoteDto } from "../types/NoteDto";
 import { isProduction } from "./node";
+import { FetchError } from "./models/FetchError";
 
-const baseUrl = isProduction()
+const baseUrl: string = isProduction()
   ? window.location.origin
   : import.meta.env.VITE_BACKEND_BASE_URL;
 
 const fetchNotes = async () => {
-  const res = await fetch(baseUrl + "/api/Notes");
+  const res = await fetch(`${baseUrl}/api/Notes`);
   return res.json();
 };
 
-// wrap the useQuery hook with a custom hook
 export const useGetNotes = () => {
   return useQuery<NoteDto[], Error>("notes", fetchNotes);
 };
 
-// create a custom hook to fetch notes by id and password
 const fetchNoteByIdAndPassword = async (
   id: string,
   password?: string | null,
@@ -27,13 +26,21 @@ const fetchNoteByIdAndPassword = async (
     url.searchParams.append("password", password);
   }
 
-  const res = await fetch(url);
-  return res.json();
+  const response = await fetch(url);
+  const data = await response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    throw new FetchError(response);
+  }
 };
 
 export const useGetNoteById = (id: string, password?: string | null) => {
-  return useQuery<NoteDto, Error>(["note", id], () =>
-    fetchNoteByIdAndPassword(id, password),
+  return useQuery<NoteDto, Error>(
+    ["note", id],
+    () => fetchNoteByIdAndPassword(id, password),
+    { retryOnMount: false, enabled: false },
   );
 };
 
@@ -48,11 +55,9 @@ const createNote = async (note: NoteDto) => {
   return res.json() as Promise<NoteDto>;
 };
 
-// use the useMutation hook to create a note
 export const useCreateNote = (queryClient: QueryClient) => {
   return useMutation(createNote, {
     onSuccess: () => {
-      // invalidate the query to refetch the data
       queryClient.invalidateQueries("note");
     },
   });

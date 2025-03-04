@@ -29,7 +29,8 @@ public class FrontPage(IPage page) : PlaywrightFacade(page, "/")
 
     public async Task SelectNumberOfViewsAsync(int numOfViews)
     {
-        await _page.SelectOptionAsync("select[title='number of reads']", numOfViews.ToString());
+        var selector = _page.GetByTestId("num-of-reads");
+        await selector.SelectOptionAsync(numOfViews.ToString());
     }
 
     public async Task EnterPasswordAsync(string password)
@@ -81,5 +82,27 @@ public class FrontPage(IPage page) : PlaywrightFacade(page, "/")
     {
         var selector = _page.GetByTestId("clipboard-btn");
         await selector.ClickAsync();
+    }
+
+    /// <summary>
+    ///  Create note with x number of reads and return the url for the note
+    /// </summary>
+    /// <param name="numOfReads"></param>
+    /// <param name="password"></param>
+    /// <param name="msg"></param>
+    /// <returns>url for the note</returns>
+    public async Task<string?> CreateNoteWithNumOfReads(int numOfReads, string password, string msg)
+    {
+        // Enter the message and submit
+        await EnterMessageAsync(msg);
+        // Toggle the advanced fields
+        await ToggleAdvancedFieldsAsync();
+        // Enter the password
+        await EnterPasswordAsync(password);
+        await EnterPasswordAgainAsync(password);
+        await SelectNumberOfViewsAsync(numOfReads);
+        await ClickSubmitAsync();
+        
+        return await GetNoteLinkHrefAsync();
     }
 }

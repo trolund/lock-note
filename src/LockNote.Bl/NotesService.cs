@@ -7,33 +7,32 @@ namespace LockNote.Bl;
 
 public class NotesService(NoteRepository notesRepository, ILogger<NotesService> logger)
 {
-    public async Task<NoteDto> UpdateNoteAsync(NoteDto note)
+    private async Task UpdateReadCounterNoteAsync(Note? note)
     {
-        if (note.Id is null)
+        if (note?.Id is null)
         {
             throw new ArgumentException("Note id is required");
         }
-        
+
         var noteModel = await notesRepository.GetNoteAsync(note.Id);
         
-        noteModel.Content = note.Content;
-        // TODO: fix?
-        noteModel.ReadBeforeDelete = (note.ReadBeforeDelete ?? 1) - 1;
+        noteModel.ReadBeforeDelete--;
 
-        if (noteModel.ReadBeforeDelete == 0)
+        if (noteModel.ReadBeforeDelete <= 0)
         {
             await DeleteNoteAsync(note.Id);
         }
-        
-        var updatedNote = await notesRepository.UpdateNoteAsync(noteModel);
-        return NoteDto.FromModel(updatedNote);
+        else
+        {
+            await notesRepository.UpdateNoteAsync(noteModel);
+        }
     }
-    
+
     public async Task<NoteDto?> CreateNoteAsync(NoteDto note)
     {
         var noteModel = new Note
         {
-            ReadBeforeDelete = 1,
+            ReadBeforeDelete = note.ReadBeforeDelete == 1 ? 1 : note.ReadBeforeDelete,
             Content = note.Content,
             CreatedAt = DateTime.UtcNow
         };
@@ -71,7 +70,9 @@ public class NotesService(NoteRepository notesRepository, ILogger<NotesService> 
         {
             entity.Content = Encryption.Decrypt(entity.Content, password);
         }
-
+        
+        await UpdateReadCounterNoteAsync(entity);
+        
         return entity;
     }
 
@@ -79,8 +80,8 @@ public class NotesService(NoteRepository notesRepository, ILogger<NotesService> 
     {
         return await notesRepository.GetAllNotesAsync();
     }
-    
-    public async Task DeleteNoteAsync(string id)
+
+    private async Task DeleteNoteAsync(string id)
     {
         await notesRepository.DeleteNoteAsync(id);
     }
