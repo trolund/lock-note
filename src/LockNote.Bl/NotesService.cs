@@ -16,7 +16,7 @@ public class NotesService(NoteRepository notesRepository, ILogger<NotesService> 
 
         var noteModel = await notesRepository.GetNoteAsync(note.Id);
         
-        noteModel.ReadBeforeDelete--;
+        noteModel!.ReadBeforeDelete--;
 
         if (noteModel.ReadBeforeDelete <= 0)
         {
@@ -70,8 +70,11 @@ public class NotesService(NoteRepository notesRepository, ILogger<NotesService> 
         {
             entity.Content = Encryption.Decrypt(entity.Content, password);
         }
-        
-        await UpdateReadCounterNoteAsync(entity);
+
+        if (entity is not null)
+        {
+            await UpdateReadCounterNoteAsync(entity);
+        }
         
         return entity;
     }

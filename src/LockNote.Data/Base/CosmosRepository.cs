@@ -14,7 +14,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         return obj.PartitionKey;
     }
 
-    public async Task<T> GetByIdAsync(string id)
+    public async Task<T?> GetByIdAsync(string id)
     {
         try
         {
@@ -23,7 +23,7 @@ public class CosmosRepository<T>(ICosmosDbService cosmosDbService) : IRepository
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            return null!;
+            return null;
         }
     }
 

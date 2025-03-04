@@ -16,7 +16,7 @@ public class NoteRepository(IRepository<Note> notesRepository)
         return await notesRepository.AddAsync(note);
     }
 
-    public async Task<Note> GetNoteAsync(string id)
+    public async Task<Note?> GetNoteAsync(string id)
     {
         return await notesRepository.GetByIdAsync(id);
     }

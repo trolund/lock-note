@@ -18,10 +18,6 @@ export const ReadNote = () => {
     refetch();
   }, [noteId]);
 
-  // if (!data?.content) {
-  //   return <Navigate to="/not-found" replace />;
-  // }
-
   if (data?.id === "passwordIncorrect") {
     return (
       <div>
