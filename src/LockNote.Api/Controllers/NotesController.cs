@@ -22,6 +22,7 @@ namespace LockNote.Controllers
             return Ok(note);
         }
         
+        // Is a post to allow for the password to be stored in the body
         [HttpPost("{id}")]
         public async Task<ActionResult> GetNote([FromRoute] string id, [FromBody] NoteRequest req)
         {
@@ -33,6 +34,13 @@ namespace LockNote.Controllers
             }
             
             return Ok(note);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteNote([FromRoute] string id)
+        {
+            await notesService.DeleteNoteAsync(id);
+            return Ok();
         }
     }
 }

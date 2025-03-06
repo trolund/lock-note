@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 import { NoteDto } from "../types/NoteDto";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 type Inputs = {
   message: string;
@@ -13,9 +14,13 @@ type Inputs = {
 
 type NoteFormProps = {
   mutate: (note: NoteDto) => void;
+  isWaitingForCreation: boolean;
 };
 
-export default function NoteForm({ mutate }: NoteFormProps) {
+export default function NoteForm({
+  mutate,
+  isWaitingForCreation,
+}: NoteFormProps) {
   const {
     register,
     handleSubmit,
@@ -145,8 +150,11 @@ export default function NoteForm({ mutate }: NoteFormProps) {
       <button
         data-testid="submit-button"
         type="submit"
-        className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+        className="ml-auto mr-auto mt-5 flex gap-3 rounded-lg bg-blue-500 px-4 py-2 align-middle text-sm font-medium text-white hover:bg-blue-600"
       >
+        {isWaitingForCreation && (
+          <FontAwesomeIcon icon={faSpinner} className="animate-spin" />
+        )}
         Create note
       </button>
     </form>

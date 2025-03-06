@@ -10,9 +10,19 @@ Content-Type: application/json
   "password": "mypassword"
 }
 
-### Get a note
+### Work on note with id:
 @Note_Id = rh4Vok0GXR
+
+### Get a note
 POST {{LockNote_Api_HostAddress}}/api/notes/{{Note_Id}}
+Content-Type: application/json
+
+{
+  "password": "mypassword"
+}
+
+### Delete a note
+DELETE {{LockNote_Api_HostAddress}}/api/notes/{{Note_Id}}
 Content-Type: application/json
 
 {

@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faClipboard } from "@fortawesome/free-solid-svg-icons";
-// import Lottie from "lottie-react";
-// import okAnimation from "../assets/ok.json";
+import Lottie from "lottie-react";
+import okAnimation from "../assets/ok.json";
 import { Link, Navigate, useParams } from "react-router-dom";
 
 interface CreatedPageProps {}
@@ -36,7 +36,7 @@ const CreatedPage: FunctionComponent<CreatedPageProps> = () => {
           <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
           Back
         </Link>
-        {/* <Lottie animationData={okAnimation} loop={false} /> */}
+        <Lottie animationData={okAnimation} loop={false} />
         <h2 className="-mt-24 mb-12 text-xl text-green-600">
           Your note has been created!
         </h2>

@@ -84,7 +84,7 @@ public class NotesService(NoteRepository notesRepository, ILogger<NotesService> 
         return await notesRepository.GetAllNotesAsync();
     }
 
-    private async Task DeleteNoteAsync(string id)
+    public async Task DeleteNoteAsync(string id)
     {
         await notesRepository.DeleteNoteAsync(id);
     }

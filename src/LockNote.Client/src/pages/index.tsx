@@ -6,19 +6,20 @@ import { useNavigate } from "react-router-dom";
 
 export const Index = () => {
   const queryClient = useQueryClient();
-  const { mutate, data, isError } = useCreateNote(queryClient);
+  const { mutate, data, isError, isLoading, isSuccess } =
+    useCreateNote(queryClient);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data?.id) {
+    if (data?.id && isSuccess) {
       navigate(`created/${data.id}`, { replace: true });
     }
-  }, [data, navigate]);
+  }, [data, navigate, isSuccess]);
 
   return (
     <div className="block">
       <div className="mx-auto mb-4 min-h-8 max-w-2xl">
-        <NoteForm mutate={mutate} />
+        <NoteForm mutate={mutate} isWaitingForCreation={isLoading} />
         {isError && <p>An error occurred</p>}
       </div>
       <div className="rounded-lg bg-gray-900 p-8 shadow-lg">
