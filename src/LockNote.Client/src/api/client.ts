@@ -8,7 +8,7 @@ const baseUrl: string = isProduction()
   : import.meta.env.VITE_BACKEND_BASE_URL;
 
 const fetchNotes = async () => {
-  const res = await fetch(`${baseUrl}/api/Notes`);
+  const res = await fetch(`${baseUrl}/api/notes`);
   return res.json();
 };
 
@@ -20,13 +20,16 @@ const fetchNoteByIdAndPassword = async (
   id: string,
   password?: string | null,
 ) => {
-  const url = new URL(`${baseUrl}/api/Notes/${id}`);
+  const url = new URL(`${baseUrl}/api/notes/${id}`);
 
-  if (password) {
-    url.searchParams.append("password", password);
-  }
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password: password }),
+  });
 
-  const response = await fetch(url);
   const data = await response.json();
 
   if (response.ok) {
@@ -45,7 +48,7 @@ export const useGetNoteById = (id: string, password?: string | null) => {
 };
 
 const createNote = async (note: NoteDto) => {
-  const res = await fetch(`${baseUrl}/api/Notes`, {
+  const res = await fetch(`${baseUrl}/api/notes`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

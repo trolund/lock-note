@@ -22,18 +22,10 @@ namespace LockNote.Controllers
             return Ok(note);
         }
         
-        [HttpGet]
-        public async Task<ActionResult> GetNotes()
+        [HttpPost("{id}")]
+        public async Task<ActionResult> GetNote([FromRoute] string id, [FromBody] NoteRequest req)
         {
-            var notes = await notesService.GetAllNotesAsync();
-            return Ok(notes);
-        }
-        
-        // TODO: do not sent password in url
-        [HttpGet("{id}")]
-        public async Task<ActionResult> GetNote(string id, [FromQuery] string password = "")
-        {
-            var note = await notesService.GetNoteAsync(id, password);
+            var note = await notesService.GetNoteAsync(id, req.Password ?? "");
             
             if(note == null)
             {

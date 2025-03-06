@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export const Header = () => {
   return (
     <>
-      <div className="fixed left-0 top-0 h-14 w-screen bg-black bg-opacity-70 backdrop-blur-[15px]">
+      <div className="fixed left-0 top-0 z-50 h-14 w-screen bg-black bg-opacity-70 backdrop-blur-[15px]">
         <div className="flex gap-2 align-middle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
