@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 export const ReadNote = () => {
   const { noteId } = useParams();
 
-  // state of password input
-  const [password, setPassword] = useState<string | null>(null);
-
   if (!noteId) {
     return <Navigate to="/not-found" replace />;
   }
+
+  // state of password input
+  const [password, setPassword] = useState<string | null>(null);
 
   const { data, refetch, isLoading } = useGetNoteById(noteId, password);
 
