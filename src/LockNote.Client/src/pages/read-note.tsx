@@ -55,7 +55,7 @@ export const ReadNote = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-fit flex-col gap-4">
       <Link
         type="button"
         data-testid="back-btn"
@@ -79,8 +79,8 @@ export const ReadNote = () => {
             disabled
             value={data?.content ?? "Note does not exist"}
           />
-          <p>Reads left: {data?.readBeforeDelete}</p>
-          {data?.readBeforeDelete && data?.readBeforeDelete > 0 && (
+          <p>Reads left: {(data?.readBeforeDelete ?? 1) - 1}</p>
+          {data?.readBeforeDelete && data?.readBeforeDelete > 1 && (
             <button type="button" onClick={() => mutate()}>
               Delete
             </button>

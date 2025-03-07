@@ -173,7 +173,7 @@ export default function NoteForm({
             </p>
             <hr className="border-dashed border-slate-700" />
             <p className="text-slate-500">
-              When a password is used is the message encrypted an can not be
+              When a password is used is the message is encrypted and can not be
               read by anyone without the correct password.
             </p>
           </div>

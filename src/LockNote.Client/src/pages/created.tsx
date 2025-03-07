@@ -3,12 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faClipboard } from "@fortawesome/free-solid-svg-icons";
 import Lottie from "lottie-react";
 import okAnimation from "../assets/ok.json";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 
 interface CreatedPageProps {}
 
 const CreatedPage: FunctionComponent<CreatedPageProps> = () => {
   const { noteId } = useParams();
+  const location = useLocation();
+
+  if (!location.state?.fromRoot) {
+    return <Navigate to="/" replace />;
+  }
 
   if (!noteId) {
     return <Navigate to="/not-found" replace />;
@@ -25,39 +30,38 @@ const CreatedPage: FunctionComponent<CreatedPageProps> = () => {
   };
 
   return (
-    <div className="mx-auto flex min-h-8 max-w-2xl flex-col gap-4">
+    <div className="flex min-h-8 w-fit max-w-2xl flex-col gap-4">
       <div className="flex flex-col gap-3">
         <Link
           type="button"
           data-testid="back-btn"
           to="/"
-          className="mt-5 w-24 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+          className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
         >
           <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
-          Back
+          Create new note
         </Link>
         {okAnimation && (
           <Lottie animationData={okAnimation} loop={false} allowTransparency />
         )}
-        <h2 className="-mt-24 mb-12 text-xl text-green-600">
+        <h2 className="mb-12 text-xl text-green-600">
           Your note has been created!
         </h2>
         <p className="text-slate-400">You can access it at:</p>
-        <div className="flex items-baseline gap-4">
-          <Link
-            data-testid="note-link"
-            to={`/note/${noteId}`}
-          >{`${window.location.origin}/note/${noteId}`}</Link>
-          <button
-            type="button"
-            data-testid="clipboard-btn"
-            className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
-            onClick={() => copyToClipboard(noteId)}
-          >
-            <FontAwesomeIcon icon={faClipboard} className="mr-2" />
-            Copy link to clipboard
-          </button>
-        </div>
+
+        <Link
+          data-testid="note-link"
+          to={`/note/${noteId}`}
+        >{`${window.location.origin}/note/${noteId}`}</Link>
+        <button
+          type="button"
+          data-testid="clipboard-btn"
+          className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+          onClick={() => copyToClipboard(noteId)}
+        >
+          <FontAwesomeIcon icon={faClipboard} className="mr-2" />
+          Copy link to clipboard
+        </button>
       </div>
     </div>
   );
