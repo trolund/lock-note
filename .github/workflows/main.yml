@@ -8,6 +8,7 @@ on:
 
 jobs:
   teardown-prod-env:
+    if: ${{ vars.EXE_TEST == 'true' }}
     uses: ./.github/workflows/teardown.yml
     secrets: inherit
     with:
@@ -22,6 +23,7 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   deploy-test:
+    if: ${{ vars.EXE_TEST == 'true' }}
     needs: [build, teardown-prod-env]
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
@@ -35,12 +37,14 @@ jobs:
       ENV: "test"
 
   tests:
+    if: ${{ vars.EXE_TEST == 'true' }}
     needs: deploy-test
     uses: ./.github/workflows/tests.yml
     with:
       ENV: "test"
 
   teardown-test-env:
+    if: ${{ vars.EXE_TEST == 'true' }}
     needs: tests
     uses: ./.github/workflows/teardown.yml
     secrets: inherit
