@@ -1,6 +1,30 @@
-@LockNote.Api_HostAddress = http://localhost:5255
+@LockNote_Api_HostAddress = https://localhost:5001
 
-GET {{LockNote.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Create a note
+POST {{LockNote_Api_HostAddress}}/api/notes
+Content-Type: application/json
 
-###
+{
+  "content": "This is a test note",
+  "readBeforeDelete": 3,
+  "password": "mypassword"
+}
+
+### Work on note with id:
+@Note_Id = rh4Vok0GXR
+
+### Get a note
+POST {{LockNote_Api_HostAddress}}/api/notes/{{Note_Id}}
+Content-Type: application/json
+
+{
+  "password": "mypassword"
+}
+
+### Delete a note
+DELETE {{LockNote_Api_HostAddress}}/api/notes/{{Note_Id}}
+Content-Type: application/json
+
+{
+  "password": "mypassword"
+}

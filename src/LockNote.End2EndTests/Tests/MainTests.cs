@@ -70,4 +70,44 @@ public class MainTests : PageTest
         
         Assert.That(message, Is.EqualTo(storedMessage));
     }
+
+    [TestCase(1)]
+    [TestCase(5)]
+    [TestCase(10)]
+    public async Task
+        WHEN_ANoteIsCreatedWithANumberOfAllowedReads_AND_TheNoteIsReadThatNumberOfTime_THEN_TheNoteIsDeleted(int numOfReads)
+    {
+        const string password = "123";
+        var msg = $"number of reads {numOfReads}";
+        var page = new FrontPage(Page);
+        
+        // Go to the page
+        await page.GoToPageAsync();
+        var url = await page.CreateNoteWithNumOfReads(numOfReads, password, msg);
+        
+        Assert.That(url, Is.Not.Null);
+        
+        var notePage = new ReadNotePage(Page);
+
+        for (var i = 0; i < numOfReads; i++)
+        {
+            await notePage.GoToUrlAsync(url);
+            await notePage.EnterPasswordAsync(password);
+            await notePage.ClickSubmitAsync();
+
+            await Page.PauseAsync();
+        
+            // read the message
+            var storedMessage = await notePage.GetMessageAsync();
+        
+            Assert.That(msg, Is.EqualTo(storedMessage));
+        }
+        
+        await notePage.GoToUrlAsync(url);
+        
+        var errorMsg = await notePage.GetMessageAsync();
+
+        const string error = "Note does not exist";
+        Assert.That(errorMsg, Is.EqualTo(error));
+    }
 }

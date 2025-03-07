@@ -4,13 +4,11 @@ on:
   pull_request: # Trigger the workflow on pull requests
     branches:
       - main
-  push: # Trigger the workflow on push to main
-    branches:
-      - pipeline-refactor
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
   teardown-prod-env:
+    if: ${{ vars.EXE_TEST == 'true' }}
     uses: ./.github/workflows/teardown.yml
     secrets: inherit
     with:
@@ -25,6 +23,7 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   deploy-test:
+    if: ${{ vars.EXE_TEST == 'true' }}
     needs: [build, teardown-prod-env]
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
@@ -38,12 +37,14 @@ jobs:
       ENV: "test"
 
   tests:
+    if: ${{ vars.EXE_TEST == 'true' }}
     needs: deploy-test
     uses: ./.github/workflows/tests.yml
     with:
       ENV: "test"
 
   teardown-test-env:
+    if: ${{ vars.EXE_TEST == 'true' }}
     needs: tests
     uses: ./.github/workflows/teardown.yml
     secrets: inherit
@@ -57,6 +58,7 @@ jobs:
 
   deploy:
     needs: [build, tests, teardown-test-env]
+    if: success() || cancelled() || needs.teardown-test-env.result == 'skipped' && needs.tests.result == 'skipped'
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:

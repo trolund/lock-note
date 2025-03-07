@@ -1,6 +1,6 @@
 using Microsoft.Azure.Cosmos;
 
-namespace LockNote.Data;
+namespace LockNote.Data.Base;
 
 public class CosmosDbService(string? connectionString, CosmosDbSettings settings) : ICosmosDbService
 {
