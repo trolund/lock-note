@@ -60,10 +60,10 @@ export const ReadNote = () => {
         type="button"
         data-testid="back-btn"
         to="/"
-        className="mt-5 w-24 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
+        className="mt-5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 hover:text-white"
       >
         <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
-        Back
+        Create new note
       </Link>
       <h1>{noteId}</h1>
       {isLoading ? (
@@ -79,7 +79,9 @@ export const ReadNote = () => {
             disabled
             value={data?.content ?? "Note does not exist"}
           />
-          <p>Reads left: {(data?.readBeforeDelete ?? 1) - 1}</p>
+          <p className="text-slate-600">
+            Reads left: {(data?.readBeforeDelete ?? 1) - 1}
+          </p>
           {data?.readBeforeDelete && data?.readBeforeDelete > 1 && (
             <button type="button" onClick={() => mutate()}>
               Delete
