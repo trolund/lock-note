@@ -58,6 +58,7 @@ jobs:
 
   deploy:
     needs: [build, tests, teardown-test-env]
+    if: success() || cancelled() || needs.teardown-test-env.result == 'skipped' && needs.tests.result == 'skipped'
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
