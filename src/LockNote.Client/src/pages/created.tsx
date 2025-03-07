@@ -36,7 +36,9 @@ const CreatedPage: FunctionComponent<CreatedPageProps> = () => {
           <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
           Back
         </Link>
-        <Lottie animationData={okAnimation} loop={false} />
+        {okAnimation && (
+          <Lottie animationData={okAnimation} loop={false} allowTransparency />
+        )}
         <h2 className="-mt-24 mb-12 text-xl text-green-600">
           Your note has been created!
         </h2>

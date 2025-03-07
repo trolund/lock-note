@@ -65,3 +65,21 @@ export const useCreateNote = (queryClient: QueryClient) => {
     },
   });
 };
+
+const deleteNote = async (noteId: string) => {
+  const res = await fetch(`${baseUrl}/api/notes/${noteId}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete note");
+  }
+};
+
+export const useDeleteNote = (id: string, queryClient: QueryClient) => {
+  return useMutation(() => deleteNote(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("note");
+    },
+  });
+};

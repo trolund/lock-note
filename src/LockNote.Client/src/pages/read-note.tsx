@@ -1,19 +1,28 @@
-import { Link, Navigate, useParams } from "react-router-dom";
-import { useGetNoteById } from "../api/client";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { useDeleteNote, useGetNoteById } from "../api/client";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useQueryClient } from "react-query";
 
 export const ReadNote = () => {
   const { noteId } = useParams();
+  const queryClient = useQueryClient();
 
   if (!noteId) {
     return <Navigate to="/not-found" replace />;
   }
 
-  // state of password input
   const [password, setPassword] = useState<string | null>(null);
   const { data, refetch, isLoading } = useGetNoteById(noteId, password);
+  const { mutate, isSuccess } = useDeleteNote(noteId, queryClient);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/", { replace: true });
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     refetch();
@@ -70,6 +79,12 @@ export const ReadNote = () => {
             disabled
             value={data?.content ?? "Note does not exist"}
           />
+          <p>Reads left: {data?.readBeforeDelete}</p>
+          {data?.readBeforeDelete && data?.readBeforeDelete > 0 && (
+            <button type="button" onClick={() => mutate()}>
+              Delete
+            </button>
+          )}
         </>
       )}
     </div>

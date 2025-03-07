@@ -1,9 +1,18 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faMinus,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import { NoteDto } from "../types/NoteDto";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faLock,
+  faLockOpen,
+} from "@fortawesome/free-solid-svg-icons";
 
 type Inputs = {
   message: string;
@@ -31,19 +40,16 @@ export default function NoteForm({
   const password = watch("password");
   const numOfViews = watch("numOfViews");
 
+  const [message, setMessage] = useState<string>("");
+  const [usePassword, setUsePassword] = useState<boolean>(false);
+  const [ShowPassword, setShowPassword] = useState<boolean>(false);
+
   const onSubmit: SubmitHandler<Inputs> = () =>
     mutate({
       content: message,
-      password: password,
+      password: usePassword ? password : null,
       readBeforeDelete: numOfViews,
     } as NoteDto);
-
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [message, setMessage] = useState<string>("");
-
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
 
   return (
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
@@ -56,6 +62,10 @@ export default function NoteForm({
         >
           Your message
         </label>
+        <FontAwesomeIcon
+          icon={usePassword ? faLock : faLockOpen}
+          className="absolute"
+        />
         <textarea
           data-testid="message"
           id="message"
@@ -71,78 +81,94 @@ export default function NoteForm({
           })}
           onChange={(e) => setMessage(e.target.value)}
           value={message}
-        />
+        ></textarea>
         <p className="text-red-500" data-testid="message-error">
           {errors.message && errors.message.message}
         </p>
       </div>
+
+      <div className="mt-4 space-y-4 rounded-lg border-[1px] border-slate-700 p-4">
+        <div className="flex w-full flex-col gap-2">
+          <label className="text-sm font-medium text-gray-400">
+            Number of views
+          </label>
+          <select
+            data-testid="num-of-reads"
+            title="number of reads"
+            className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+            {...register("numOfViews", {
+              validate: (value) =>
+                (value > 0 && value <= 10) ||
+                "The number of views must be between 1 and 10",
+            })}
+            defaultValue={1}
+          >
+            {Array.from({ length: 10 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div className="mt-4 space-y-4 rounded-lg border-[1px] border-slate-700 p-4">
         <button
           data-testid="expand-button"
           type="button"
-          onClick={toggleExpand}
+          onClick={() => setUsePassword(!usePassword)}
           className="w-full bg-slate-900 text-sm text-blue-500 hover:underline"
         >
           <FontAwesomeIcon
-            icon={isExpanded ? faMinus : faPlus}
+            icon={usePassword ? faMinus : faPlus}
             className="mr-2"
           />
-          {isExpanded ? "Hide advanced fields" : "Show advanced fields"}
+          {usePassword ? "Do not use password" : "Use password"}
         </button>
-
         {/* Expanding section */}
-        {isExpanded && (
-          <div className="flex flex-col gap-4">
-            <div className="flex w-full flex-col gap-2">
-              <label className="text-sm font-medium text-gray-400">
-                Number of views
-              </label>
-              <select
-                data-testid="num-of-reads"
-                title="number of reads"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
-                {...register("numOfViews", {
-                  validate: (value) =>
-                    (value > 0 && value <= 10) ||
-                    "The number of views must be between 1 and 10",
-                })}
-                defaultValue={1}
-              >
-                {Array.from({ length: 10 }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                ))}
-              </select>
-            </div>
-
+        {usePassword && (
+          <div className="flex w-full flex-col gap-2">
+            <label className="text-sm font-medium text-gray-400">
+              Password
+            </label>
+            <span
+              className="z-10 -mb-9 ml-auto mr-4"
+              onClick={() => setShowPassword(!ShowPassword)}
+            >
+              <FontAwesomeIcon icon={ShowPassword ? faEyeSlash : faEye} />
+            </span>
+            <input
+              type={ShowPassword ? "text" : "password"}
+              className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+              placeholder="Enter a password"
+              {...register("password", { required: "Password is required" })}
+            />
+            <label className="text-sm font-medium text-gray-400">
+              Password again
+            </label>
+            <span
+              className="z-10 -mb-9 ml-auto mr-4"
+              onClick={() => setShowPassword(!ShowPassword)}
+            >
+              <FontAwesomeIcon icon={ShowPassword ? faEyeSlash : faEye} />
+            </span>
+            <input
+              type={ShowPassword ? "text" : "password"}
+              className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
+              placeholder="Enter the same again password"
+              {...register("passwordAgain", {
+                validate: (value) =>
+                  value === password || "Passwords do not match",
+              })}
+            />
+            <p className="text-red-500">
+              {errors.passwordAgain && errors.passwordAgain.message}
+            </p>
             <hr className="border-dashed border-slate-700" />
-            <div className="flex w-full flex-col gap-2">
-              <label className="text-sm font-medium text-gray-400">
-                Password
-              </label>
-              <input
-                type="password"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="Enter a password"
-                {...register("password", { required: "Password is required" })}
-              />
-              <label className="text-sm font-medium text-gray-400">
-                Password again
-              </label>
-              <input
-                type="password"
-                className="w-full rounded-lg border border-slate-700 bg-slate-950 p-2 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
-                placeholder="Enter the same again password"
-                {...register("passwordAgain", {
-                  validate: (value) =>
-                    value === password || "Passwords do not match",
-                })}
-              />
-              <p className="text-red-500">
-                {errors.passwordAgain && errors.passwordAgain.message}
-              </p>
-            </div>
+            <p className="text-slate-500">
+              When a password is used is the message encrypted an can not be
+              read by anyone without the correct password.
+            </p>
           </div>
         )}
       </div>
