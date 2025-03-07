@@ -13,6 +13,7 @@ import {
   faLock,
   faLockOpen,
 } from "@fortawesome/free-solid-svg-icons";
+import cn from "classnames";
 
 type Inputs = {
   message: string;
@@ -62,10 +63,16 @@ export default function NoteForm({
         >
           Your message
         </label>
-        <FontAwesomeIcon
-          icon={usePassword ? faLock : faLockOpen}
-          className="absolute"
-        />
+        <span className="z-10 -mb-4 ml-auto mr-6">
+          <FontAwesomeIcon
+            icon={usePassword ? faLock : faLockOpen}
+            className={cn(
+              "absolute",
+              usePassword ? "text-slate-100" : "text-slate-500",
+            )}
+          />
+        </span>
+
         <textarea
           data-testid="message"
           id="message"
