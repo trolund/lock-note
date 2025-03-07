@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faClipboard } from "@fortawesome/free-solid-svg-icons";
 import Lottie from "lottie-react";
-import okAnimation from "../assets/ok.json";
+import okAnimation from "../assets/ok2.json";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 
 interface CreatedPageProps {}
