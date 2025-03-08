@@ -7,6 +7,7 @@ import { useQueryClient } from "react-query";
 
 export const ReadNote = () => {
   const { noteId } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   if (!noteId) {
@@ -16,7 +17,6 @@ export const ReadNote = () => {
   const [password, setPassword] = useState<string | null>(null);
   const { data, refetch, isLoading } = useGetNoteById(noteId, password);
   const { mutate, isSuccess } = useDeleteNote(noteId, queryClient);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,7 +55,7 @@ export const ReadNote = () => {
   }
 
   return (
-    <div className="flex w-fit flex-col gap-4">
+    <div className="flex flex-col items-center gap-4">
       <Link
         type="button"
         data-testid="back-btn"

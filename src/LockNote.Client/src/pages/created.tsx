@@ -30,7 +30,7 @@ const CreatedPage: FunctionComponent<CreatedPageProps> = () => {
   };
 
   return (
-    <div className="flex min-h-8 w-fit max-w-2xl flex-col gap-4">
+    <div className="flex min-h-8 w-fit max-w-96 flex-col gap-4">
       <div className="flex flex-col gap-3">
         <Link
           type="button"
