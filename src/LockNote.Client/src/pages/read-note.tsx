@@ -31,7 +31,7 @@ export const ReadNote = () => {
   if (data?.id === "passwordIncorrect") {
     return (
       <div>
-        <h1>Password Missing</h1>
+        <h1>Password needed</h1>
         <p>The note you are trying to access is password protected.</p>
         <p>Please enter the password to view the note.</p>
         <label className="text-sm font-medium text-gray-400">Password</label>
@@ -79,11 +79,15 @@ export const ReadNote = () => {
             disabled
             value={data?.content ?? "Note does not exist"}
           />
-          <p className="text-slate-600">
+          <p data-testid="read-count" className="text-slate-600">
             Reads left: {(data?.readBeforeDelete ?? 1) - 1}
           </p>
           {data?.readBeforeDelete && data?.readBeforeDelete > 1 && (
-            <button type="button" onClick={() => mutate()}>
+            <button
+              data-testid="delete-btn"
+              type="button"
+              onClick={() => mutate()}
+            >
               Delete
             </button>
           )}
