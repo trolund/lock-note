@@ -9,17 +9,17 @@ Lock Note is a secure note-sharing application that allows users to create one-t
 ### Core Features
 
 - **Create Notes**: Users can write a note and generate a unique link to share it. ✅
-- **One-Time Readability**: Each note can only be accessed once or a specified number of times, after which it is deleted permanently.
+- **One-Time Readability**: Each note can only be accessed once or a specified number of times, after which it is deleted permanently. ✅
 - **Password Protection (Optional)**: Users can set a password for additional security and encryption. ✅
 - **Expiration Time**: Notes automatically expire after a month if not accessed. ✅
 
 ### Security
 
-- **End-to-End Encryption**: Notes are encrypted before storage when a password is used. SSL is used for secure transport of the message.
+- **End-to-End Encryption**: Notes are encrypted before storage when a password is used. SSL is used for secure transport of the message. ✅
 
-- **Self-Destruct Mechanism**: Once a note is accessed, it is immediately deleted.
+- **Self-Destruct Mechanism**: Once a note is accessed (a number of times), it is immediately deleted. ✅
 
-- **No Data Retention**: No copies of the note are stored after deletion.
+- **No Data Retention**: No copies of the note are stored after deletion. ✅
 
 ## Technical Requirements
 
